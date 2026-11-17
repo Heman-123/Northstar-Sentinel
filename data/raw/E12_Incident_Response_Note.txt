@@ -1,0 +1,18 @@
+=============================================================================
+NORTHSTAR INCIDENT RESPONSE TEAM - SUPPLEMENTARY MEMORANDUM
+Ref: IR-MEMO-2026-1012 | Classification: Internal Sensitive
+=============================================================================
+
+1. Production Integration Credential:
+   - Client ID: rollcall-prod (Key ID: rc-prod-01).
+   - The credential had no expiry date and was not scheduled for rotation during October.
+   - The integration register contained no IP restriction filter.
+
+2. Vendor Statement & Ingestion Audit:
+   - Vendor has not confirmed key theft, stating exposure during support troubleshooting (HD-1058) is under active internal review.
+   - An additional configuration audit log (E11) records an explicit 'credential_config_read' event at 03:16:35 IST from external IP 203.0.113.77.
+   - The log stream does NOT show the plaintext secret value, the physical identity of the human operator behind the terminal, or the destination where any dumped files were copied.
+
+3. Investigator Mandate:
+   - Strict separation of directly verified log evidence from inferred links and unknown variables.
+   - No unsubstantiated attribution to human individuals without cryptographic proof.

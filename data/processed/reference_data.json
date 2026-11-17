@@ -1,0 +1,165 @@
+{
+  "integrations": [
+    {
+      "integration_id": "INT-01",
+      "name": "RollCall Connect",
+      "client_id": "rollcall-prod",
+      "service_identity": "svc_rollcall",
+      "api_key_id": "rc-prod-01",
+      "status": "ACTIVE",
+      "expiry": "Never",
+      "ip_restriction": "None",
+      "owner": "IT Operations",
+      "documented_purpose": "Attendance synchronization",
+      "granted_permissions": "attendance.read;learner.search;learner.export;course.read"
+    },
+    {
+      "integration_id": "INT-02",
+      "name": "Payment Gateway",
+      "client_id": "razorpay-prod",
+      "service_identity": "svc_payment",
+      "api_key_id": "pg-prod-09",
+      "status": "ACTIVE",
+      "expiry": "2027-01-01",
+      "ip_restriction": "10.20.0.0/16",
+      "owner": "Finance",
+      "documented_purpose": "Fee processing",
+      "granted_permissions": "payments.write;payments.read"
+    },
+    {
+      "integration_id": "INT-03",
+      "name": "SMS Gateway",
+      "client_id": "sms-alerts",
+      "service_identity": "svc_sms",
+      "api_key_id": "sms-key-03",
+      "status": "ACTIVE",
+      "expiry": "2026-12-31",
+      "ip_restriction": "None",
+      "owner": "Student Affairs",
+      "documented_purpose": "Parent SMS notification",
+      "granted_permissions": "sms.send"
+    }
+  ],
+  "accounts": [
+    {
+      "account_id": "USR-01",
+      "username": "ananya.r",
+      "full_name": "Ananya Raman",
+      "role": "IT Operations Analyst",
+      "department": "IT Operations",
+      "status": "ACTIVE",
+      "last_working_day": "N/A",
+      "mfa_enabled": "YES"
+    },
+    {
+      "account_id": "USR-02",
+      "username": "rahul.k",
+      "full_name": "Rahul Krishnan",
+      "role": "IT Administrator",
+      "department": "IT Operations",
+      "status": "ACTIVE",
+      "last_working_day": "N/A",
+      "mfa_enabled": "YES"
+    },
+    {
+      "account_id": "USR-03",
+      "username": "meera.s",
+      "full_name": "Meera Sundaram",
+      "role": "Finance Analyst",
+      "department": "Finance",
+      "status": "ACTIVE",
+      "last_working_day": "N/A",
+      "mfa_enabled": "YES"
+    },
+    {
+      "account_id": "USR-04",
+      "username": "former.ajay",
+      "full_name": "Ajay Varma",
+      "role": "Support Technician",
+      "department": "Support",
+      "status": "TERMINATED",
+      "last_working_day": "2026-09-30",
+      "mfa_enabled": "NO"
+    },
+    {
+      "account_id": "SVC-01",
+      "username": "svc_rollcall",
+      "full_name": "RollCall Service Account",
+      "role": "Integration Identity",
+      "department": "Vendor Operations",
+      "status": "ACTIVE",
+      "last_working_day": "N/A",
+      "mfa_enabled": "NO"
+    },
+    {
+      "account_id": "SVC-02",
+      "username": "svc_backend_worker",
+      "full_name": "ClassBridge Backend Worker",
+      "role": "Internal Service",
+      "department": "IT Operations",
+      "status": "ACTIVE",
+      "last_working_day": "N/A",
+      "mfa_enabled": "NO"
+    }
+  ],
+  "tickets": [
+    {
+      "ticket_id": "HD-1041",
+      "date": "2026-10-07",
+      "requester": "RollCall Support",
+      "department": "Vendor",
+      "subject": "Attendance sync delay",
+      "description": "Vendor notes sporadic latency spikes during daily attendance sync.",
+      "status": "RESOLVED",
+      "resolution_notes": "Connector timeout increased to 60s."
+    },
+    {
+      "ticket_id": "HD-1058",
+      "date": "2026-10-09",
+      "requester": "RollCall Support",
+      "department": "Vendor",
+      "subject": "Config assistance needed",
+      "description": "Vendor support requested client ID and a full configuration screenshot to verify endpoints.",
+      "status": "RESOLVED",
+      "resolution_notes": "Admin replied with screenshot of settings panel."
+    },
+    {
+      "ticket_id": "HD-1062",
+      "date": "2026-10-11",
+      "requester": "rahul.k",
+      "department": "IT Operations",
+      "subject": "Scheduled connector maintenance",
+      "description": "Connector routine patching scheduled for 12-Oct dawn window. No bulk export planned.",
+      "status": "CLOSED",
+      "resolution_notes": "Maintenance planned and completed."
+    },
+    {
+      "ticket_id": "HD-1069",
+      "date": "2026-10-12",
+      "requester": "meera.s",
+      "department": "Finance",
+      "subject": "Unexpected learner export inquiry",
+      "description": "Finance noticed a bulk export file learners-20261012.csv in CampusVault. Inquired if required for billing.",
+      "status": "OPEN",
+      "resolution_notes": "Finance confirmed they did NOT request or authorize this export."
+    }
+  ],
+  "communications": [
+    {
+      "id": "VND-221",
+      "timestamp": "2026-10-12T06:30:00+05:30",
+      "sender": "support@rollcallconnect.com",
+      "recipient": "it.ops@northstar.edu.in",
+      "subject": "RE: Clarification on Morning Integration Spike",
+      "body": "We confirm routine connector maintenance occurred on our side between 02:00 and 02:30 IST on October 12. However, our records show no scheduled task or authorized engineer initiated a bulk learner export at 03:17 IST. Furthermore, our authorized production connector egress node is strictly 10.10.4.12. We are investigating whether an API secret was inadvertently disclosed in past ticket threads."
+    },
+    {
+      "id": "INT-REQ-18",
+      "timestamp": "2026-10-12T08:00:00+05:30",
+      "sender": "rahul.k@northstar.edu.in",
+      "recipient": "support@rollcallconnect.com",
+      "subject": "URGENT: Credential and Source Verification",
+      "body": "Please confirm the active credential ID, authorized source IPs, and last rotation date for client rollcall-prod. Do NOT send raw secrets over this communication channel."
+    }
+  ]
+}

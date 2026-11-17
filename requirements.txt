@@ -1,0 +1,10 @@
+# Northstar Sentinel - Python Dependencies
+# The core forensic pipeline and PEP proxy utilize Python 3.9+ standard library modules
+# (hashlib, json, csv, ipaddress, http.server, unittest) for zero-dependency execution.
+# Optional extensions for production deployment and automated testing:
+
+pytest>=7.4.0
+requests>=2.31.0
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pydantic>=2.4.0

@@ -1,0 +1,5 @@
+ticket_id,date,requester,department,subject,description,status,resolution_notes
+HD-1041,2026-10-07,RollCall Support,Vendor,Attendance sync delay,Vendor notes sporadic latency spikes during daily attendance sync.,RESOLVED,Connector timeout increased to 60s.
+HD-1058,2026-10-09,RollCall Support,Vendor,Config assistance needed,Vendor support requested client ID and a full configuration screenshot to verify endpoints.,RESOLVED,Admin replied with screenshot of settings panel.
+HD-1062,2026-10-11,rahul.k,IT Operations,Scheduled connector maintenance,Connector routine patching scheduled for 12-Oct dawn window. No bulk export planned.,CLOSED,Maintenance planned and completed.
+HD-1069,2026-10-12,meera.s,Finance,Unexpected learner export inquiry,Finance noticed a bulk export file learners-20261012.csv in CampusVault. Inquired if required for billing.,OPEN,Finance confirmed they did NOT request or authorize this export.

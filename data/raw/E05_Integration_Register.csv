@@ -1,0 +1,4 @@
+integration_id,name,client_id,service_identity,api_key_id,status,expiry,ip_restriction,owner,documented_purpose,granted_permissions
+INT-01,RollCall Connect,rollcall-prod,svc_rollcall,rc-prod-01,ACTIVE,Never,None,IT Operations,Attendance synchronization,attendance.read;learner.search;learner.export;course.read
+INT-02,Payment Gateway,razorpay-prod,svc_payment,pg-prod-09,ACTIVE,2027-01-01,10.20.0.0/16,Finance,Fee processing,payments.write;payments.read
+INT-03,SMS Gateway,sms-alerts,svc_sms,sms-key-03,ACTIVE,2026-12-31,None,Student Affairs,Parent SMS notification,sms.send

@@ -1,0 +1,15 @@
+event_id,timestamp,identity,source_ip,auth_method,status,user_agent
+A001,2026-10-09T08:15:22+05:30,ananya.r,198.51.100.21,MFA_SAML,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+A002,2026-10-09T08:30:11+05:30,rahul.k,198.51.100.25,MFA_SAML,SUCCESS,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)
+A003,2026-10-09T09:00:04+05:30,meera.s,198.51.100.30,MFA_SAML,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+A004,2026-10-09T14:10:00+05:30,svc_rollcall,10.10.4.12,API_KEY,SUCCESS,RollCall-Connector/2.4.1
+A005,2026-10-09T18:45:12+05:30,rahul.k,198.51.100.25,MFA_SAML,SUCCESS,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)
+A006,2026-10-09T22:14:05+05:30,former.ajay,203.0.113.45,PASSWORD,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+A007,2026-10-09T22:15:30+05:30,former.ajay,203.0.113.45,PASSWORD,FAILURE,Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+A008,2026-10-10T02:00:15+05:30,svc_rollcall,10.10.4.12,API_KEY,SUCCESS,RollCall-Connector/2.4.1
+A009,2026-10-11T02:00:20+05:30,svc_rollcall,10.10.4.12,API_KEY,SUCCESS,RollCall-Connector/2.4.1
+A010,2026-10-12T02:01:06+05:30,svc_rollcall,10.10.4.12,API_KEY,SUCCESS,RollCall-Connector/2.4.1
+A011,2026-10-12T03:16:32+05:30,svc_rollcall,203.0.113.77,API_KEY,SUCCESS,python-requests/2.31.0
+A012,2026-10-12T03:17:04+05:30,svc_rollcall,203.0.113.77,API_KEY,SUCCESS,python-requests/2.31.0
+A013,2026-10-12T03:19:48+05:30,svc_rollcall,203.0.113.77,API_KEY,SUCCESS,python-requests/2.31.0
+A014,2026-10-12T10:04:10+05:30,ananya.r,198.51.100.21,MFA_SAML,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64)

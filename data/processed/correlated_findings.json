@@ -1,0 +1,208 @@
+[
+  {
+    "correlation_id": "COR-01",
+    "title": "External Service Identity Ingress & API Session Binding",
+    "related_event_ids": [
+      "A011",
+      "R003",
+      "R004",
+      "R005",
+      "R006"
+    ],
+    "evidence_sources": [
+      "E01",
+      "E03"
+    ],
+    "join_keys": [
+      "source_ip: 203.0.113.77",
+      "identity/client: svc_rollcall / rollcall-prod"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "03:16:32 to 03:19:20 IST (~168s)",
+    "explanation": "Authentication log A011 confirms svc_rollcall authenticated from external IP 203.0.113.77 using API_KEY. Subsequent Gateway requests R003-R006 originated from the exact same source IP under client rollcall-prod."
+  },
+  {
+    "correlation_id": "COR-02",
+    "title": "API Gateway to Backend Portal Execution Duality",
+    "related_event_ids": [
+      "R003-P003",
+      "R004-P004",
+      "R005-P005",
+      "R006-P006"
+    ],
+    "evidence_sources": [
+      "E02",
+      "E03"
+    ],
+    "join_keys": [
+      "timestamp_delta: <= 2s",
+      "source_ip: 203.0.113.77",
+      "resource_path"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "03:16:40 to 03:19:22 IST",
+    "explanation": "Each gateway HTTP call maps directly to an application-level audit event in ClassBridge within 0-2 seconds, confirming the gateway forwarded requests without backend authorization barriers."
+  },
+  {
+    "correlation_id": "COR-03",
+    "title": "Credential Configuration Inspection Preceding Data Acquisition",
+    "related_event_ids": [
+      "CHG-882",
+      "R003"
+    ],
+    "evidence_sources": [
+      "E11",
+      "E03"
+    ],
+    "join_keys": [
+      "actor: svc_rollcall",
+      "source_ip: 203.0.113.77",
+      "time_delta: 5s"
+    ],
+    "relationship_type": "CORRELATED_INFERENCE",
+    "confidence": "HIGH",
+    "time_window": "03:16:35 to 03:16:40 IST (5s)",
+    "explanation": "CHG-882 records svc_rollcall invoking credential_config_read on integration_settings/rollcall. Exactly 5 seconds later, R003 executed a bulk learner search. Strongly supports credential verification or endpoint reconnaissance."
+  },
+  {
+    "correlation_id": "COR-04",
+    "title": "Learner Data Export Staging to Cloud Repository Exfiltration Pipeline",
+    "related_event_ids": [
+      "R004",
+      "P004",
+      "CHG-883",
+      "C001",
+      "C002",
+      "C003",
+      "C004"
+    ],
+    "evidence_sources": [
+      "E02",
+      "E03",
+      "E11",
+      "E04"
+    ],
+    "join_keys": [
+      "target_object: learner-exports/learners-20261012.csv",
+      "client_ip: 203.0.113.77"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "03:17:09 to 03:24:48 IST (~459s)",
+    "explanation": "The API export request R004 spawned export job CHG-883, writing 486,200 bytes to CampusVault (C001). Actor svc_rollcall subsequently listed the export bucket (C002) and executed two separate GET downloads (C003, C004) totaling 972,400 bytes."
+  },
+  {
+    "correlation_id": "COR-05",
+    "title": "Network Perimeter Anomaly & Connector Resumption",
+    "related_event_ids": [
+      "N001",
+      "A011",
+      "C004",
+      "N002"
+    ],
+    "evidence_sources": [
+      "E09",
+      "E01",
+      "E04"
+    ],
+    "join_keys": [
+      "source_ip: 203.0.113.77",
+      "connector_ip: 10.10.4.12"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "03:15:55 to 03:25:00 IST (~9m 5s)",
+    "explanation": "First connection from unrecognized IP 203.0.113.77 observed at 03:15:55. Anomalous activity ceased after C004 (03:24:48). At 03:25:00, legitimate connector node 10.10.4.12 resumed scheduled operations."
+  },
+  {
+    "correlation_id": "COR-06",
+    "title": "Architectural Privilege Creep Violation (Least Privilege Failure)",
+    "related_event_ids": [
+      "INT-01",
+      "P003",
+      "P004"
+    ],
+    "evidence_sources": [
+      "E05",
+      "E02",
+      "E08"
+    ],
+    "join_keys": [
+      "client_id: rollcall-prod",
+      "documented_purpose: Attendance synchronization"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "Static Policy vs Runtime Action",
+    "explanation": "INT-01 register documents purpose as strictly 'Attendance synchronization'. However, assigned scopes included learner.search and learner.export. This allowed the compromised or abused credential to dump sensitive student PII."
+  },
+  {
+    "correlation_id": "COR-07",
+    "title": "Unauthorized Operational Activity Confirmed by Business Stakeholders",
+    "related_event_ids": [
+      "HD-1062",
+      "HD-1069",
+      "VND-221",
+      "R004"
+    ],
+    "evidence_sources": [
+      "E06",
+      "E10",
+      "E03"
+    ],
+    "join_keys": [
+      "export_record: learners-20261012.csv"
+    ],
+    "relationship_type": "DIRECT_EVIDENCE",
+    "confidence": "HIGH",
+    "time_window": "11-Oct to 12-Oct",
+    "explanation": "HD-1062 confirms planned maintenance had 'No bulk export planned'. HD-1069 confirms Finance never authorized the export. VND-221 confirms RollCall vendor initiated no export. The export was entirely unauthorized."
+  },
+  {
+    "correlation_id": "COR-08",
+    "title": "Potential Credential Exposure via Support Channel Artifact",
+    "related_event_ids": [
+      "HD-1058",
+      "E08-Sec4.1",
+      "E12"
+    ],
+    "evidence_sources": [
+      "E06",
+      "E08",
+      "E12"
+    ],
+    "join_keys": [
+      "ticket: HD-1058",
+      "content: settings panel screenshot"
+    ],
+    "relationship_type": "CORRELATED_INFERENCE",
+    "confidence": "MEDIUM",
+    "time_window": "2026-10-09",
+    "explanation": "Ticket HD-1058 notes an admin provided a settings panel screenshot to vendor support on Oct 9. Policy E08 strictly forbids credentials in screenshots/tickets. Exposure is under vendor review. It is a plausible vector but NOT definitively proven as the sole leak source."
+  },
+  {
+    "correlation_id": "COR-09",
+    "title": "Dormant Terminated Account Authentication Violation (Offboarding Failure)",
+    "related_event_ids": [
+      "A006",
+      "A007",
+      "USR-04",
+      "E08-Sec8.2"
+    ],
+    "evidence_sources": [
+      "E01",
+      "E07",
+      "E08"
+    ],
+    "join_keys": [
+      "identity: former.ajay",
+      "last_working_day: 2026-09-30"
+    ],
+    "relationship_type": "UNPROVEN_HYPOTHESIS",
+    "confidence": "HIGH",
+    "time_window": "2026-10-09T22:14:05 IST",
+    "explanation": "Former employee former.ajay successfully authenticated 9 days post-termination, directly violating E08 Section 8.2. IMPORTANT: There is NO evidence connecting Ajay to the RollCall incident; this is cataloged as a distinct identity lifecycle deficiency."
+  }
+]

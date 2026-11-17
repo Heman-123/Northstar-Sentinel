@@ -1,0 +1,12 @@
+timestamp_ist,event_id,evidence_source,actor_identity,source_ip,action,resource_target,relationship_type,correlation_id,forensic_assessment
+2026-10-12 03:15:55,N001,E09,External Flow,203.0.113.77,TCP SYN/ACK Ingress,Gateway:8765,DIRECT_EVIDENCE,"COR-01, COR-05",First connection from unrecognized external IP 203.0.113.77 to Gateway.
+2026-10-12 03:16:32,A011,E01,svc_rollcall,203.0.113.77,identity.authenticate,IdP Token Cluster,DIRECT_EVIDENCE,COR-01,Third-party machine identity authenticates using static API key rc-prod-01 without MFA.
+2026-10-12 03:16:35,CHG-882,E11,svc_rollcall,203.0.113.77,credential_config_read,integration_settings/rollcall,CORRELATED_INFERENCE,COR-03,Integration settings inspected via API exactly 5 seconds before scraping operations commenced.
+2026-10-12 03:16:40,R003,E03,rollcall-prod,203.0.113.77,GET /v1/learners/search,ClassBridge Database,DIRECT_EVIDENCE,"COR-01, COR-02","Unthrottled bulk query returns 2,300 learner records in a single query. Latency: 3,250ms."
+2026-10-12 03:17:09,R004,E03,rollcall-prod,203.0.113.77,POST /v1/learners/export,ClassBridge Export Engine,DIRECT_EVIDENCE,"COR-01, COR-04","Mass export invoked. Core portal responsiveness spikes to 8,420ms due to unindexed database scan."
+2026-10-12 03:17:35,C001,E04,svc_backend_worker,10.10.2.50,object.put,campusvault-exports/learners-20261012.csv,DIRECT_EVIDENCE,COR-04,"Worker writes learners-20261012.csv (486,200 bytes) containing 2,300 learner records to cloud bucket."
+2026-10-12 03:17:50,C002,E04,svc_rollcall,203.0.113.77,bucket.list,campusvault-exports/,DIRECT_EVIDENCE,COR-04,Adversary lists repository bucket contents to locate staged export.
+2026-10-12 03:21:03,C003,E04,svc_rollcall,203.0.113.77,object.get (Exfiltration 1),learners-20261012.csv,DIRECT_EVIDENCE,COR-04,"First download of export file (486,200 bytes transferred to external IP)."
+2026-10-12 03:24:48,C004,E04,svc_rollcall,203.0.113.77,object.get (Exfiltration 2),learners-20261012.csv,DIRECT_EVIDENCE,COR-04,"Second download of export file (486,200 bytes). Cumulative egress: 972,400 bytes."
+2026-10-12 03:25:00,N002,E09,RollCall Node,10.10.4.12,TCP Ingress (Attendance Sync),Gateway:8765,DIRECT_EVIDENCE,COR-05,Legitimate RollCall connector resumes regular heartbeat and attendance synchronization.
+2026-10-09 22:14:05,A006,E01,former.ajay,198.51.100.45,identity.authenticate,Staff Portal,UNPROVEN_HYPOTHESIS,COR-09,Independent offboarding deficiency 9 days post-termination; no evidentiary link to RollCall breach.

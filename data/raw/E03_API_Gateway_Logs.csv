@@ -1,0 +1,8 @@
+request_id,timestamp,method,path,status_code,client_id,api_key_id,source_ip,response_time_ms,bytes_sent
+R001,2026-10-12T02:01:09+05:30,POST,/v1/attendance/sync,200,rollcall-prod,rc-prod-01,10.10.4.12,45,1024
+R002,2026-10-12T02:01:14+05:30,GET,/v1/attendance,200,rollcall-prod,rc-prod-01,10.10.4.12,38,4096
+R003,2026-10-12T03:16:40+05:30,GET,/v1/learners/search,200,rollcall-prod,rc-prod-01,203.0.113.77,3250,524288
+R004,2026-10-12T03:17:09+05:30,POST,/v1/learners/export,200,rollcall-prod,rc-prod-01,203.0.113.77,8420,128
+R005,2026-10-12T03:18:50+05:30,GET,/v1/courses,200,rollcall-prod,rc-prod-01,203.0.113.77,110,8192
+R006,2026-10-12T03:19:20+05:30,GET,/v1/attendance/all,200,rollcall-prod,rc-prod-01,203.0.113.77,4120,4194304
+R007,2026-10-12T09:14:58+05:30,GET,/v1/learners/1044,200,classbridge-ui,cb-ui-token,198.51.100.21,65,2048

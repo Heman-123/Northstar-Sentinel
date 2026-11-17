@@ -1,0 +1,6 @@
+event_id,timestamp,action,bucket,object_key,actor_identity,source_ip,bytes_transferred,http_status
+C001,2026-10-12T03:17:35+05:30,object.put,campusvault-exports,learner-exports/learners-20261012.csv,svc_backend_worker,10.10.2.50,486200,200
+C002,2026-10-12T03:20:12+05:30,object.list,campusvault-exports,learner-exports/,svc_rollcall,203.0.113.77,0,200
+C003,2026-10-12T03:21:03+05:30,object.get,campusvault-exports,learner-exports/learners-20261012.csv,svc_rollcall,203.0.113.77,486200,200
+C004,2026-10-12T03:24:48+05:30,object.get,campusvault-exports,learner-exports/learners-20261012.csv,svc_rollcall,203.0.113.77,486200,200
+C005,2026-10-12T11:00:15+05:30,object.list,campusvault-finance,reports/q3_summary.xlsx,meera.s,198.51.100.30,0,200

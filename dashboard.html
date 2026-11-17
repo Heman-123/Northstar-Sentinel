@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar Sentinel | Enterprise Zero-Trust SOC & DFIR Command Platform</title>
+
+  <!-- Typography: Inter, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS, Lucide Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              black: '#07090e',
+              dark: '#0c101a',
+              panel: '#111625',
+              card: '#161c2e',
+              subcard: '#1b2238',
+              hover: '#222b45',
+              border: '#232d44',
+              borderLight: '#2e3a57',
+              accent: '#00f2fe',
+              emerald: '#10b981',
+              rose: '#f43f5e',
+              amber: '#f59e0b',
+              purple: '#7928ca',
+              purpleHover: '#9333ea',
+              purpleLight: '#a855f7',
+              cyan: '#06b6d4',
+              text: '#f1f5f9',
+              muted: '#94a3b8',
+              dim: '#64748b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      font-size: 12px;
+    }
+    .cyber-grid {
+      background-image: linear-gradient(to right, rgba(35, 45, 68, 0.25) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(35, 45, 68, 0.25) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #07090e; }
+    ::-webkit-scrollbar-thumb { background: #232d44; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2e3a57; }
+
+    .nav-tab-active {
+      background-color: rgba(121, 40, 202, 0.15) !important;
+      color: #ffffff !important;
+      border-bottom: 2px solid #a855f7 !important;
+      font-weight: 700;
+    }
+    .finding-card-active {
+      background-color: #1a233a !important;
+      border: 1px solid #00f2fe !important;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.18);
+    }
+    .mitre-technique-btn {
+      background-color: #7928ca;
+      color: #ffffff;
+      transition: all 0.12s ease;
+      cursor: pointer;
+    }
+    .mitre-technique-btn:hover {
+      background-color: #9333ea;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(147, 51, 234, 0.45);
+    }
+    .pulse-glow { animation: pulse-glow 2s infinite ease-in-out; }
+    @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col cyber-grid antialiased selection:bg-purple-600 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- 1. TOP ENTERPRISE COMMAND HEADER                                      -->
+  <!-- ===================================================================== -->
+  <header class="bg-[#090d16]/95 border-b border-brand-border backdrop-blur-xl sticky top-0 z-50">
+    <div class="px-5 py-2.5">
+      
+      <!-- Primary Command Bar -->
+      <div class="flex items-center justify-between">
+        
+        <!-- Left: Logo & Case Classification -->
+        <div class="flex items-center space-x-3.5">
+          <div class="relative">
+            <div class="h-9 w-9 rounded-lg bg-gradient-to-tr from-cyan-500/20 via-purple-500/10 to-transparent border border-brand-accent/50 flex items-center justify-center text-brand-accent shadow-md shadow-cyan-500/10">
+              <i data-lucide="shield-check" class="h-5 w-5"></i>
+            </div>
+            <span class="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-brand-emerald pulse-glow"></span>
+          </div>
+
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-mono font-extrabold text-sm sm:text-base text-white tracking-wider">
+                NORTHSTAR<span class="text-brand-accent">_SENTINEL</span>
+              </span>
+              <span class="px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800/80 font-mono text-[10px] font-bold">
+                ES-00024 [NS-26-014]
+              </span>
+              <span class="hidden md:inline px-2 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-800/80 font-mono text-[10px] font-bold animate-pulse">
+                DEFCON 2 : ELEVATED RISK
+              </span>
+            </div>
+            <p class="text-[11px] text-brand-muted font-mono flex items-center space-x-2 mt-0.5">
+              <span>CRIMEATHON '26 DEFENSE TRACK</span>
+              <span>•</span>
+              <span>Northstar Skills Academy (Chennai)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Controls & Status -->
+        <div class="flex items-center space-x-3">
+          <div class="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-lg bg-[#071711] border border-emerald-900/80 text-emerald-400 text-xs font-mono">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>PEP PROXY: 127.0.0.1:8765 [ONLINE]</span>
+          </div>
+
+          <button onclick="triggerAttackSimulationFromUI()" id="triggerBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all shadow-md shadow-rose-600/20">
+            <i data-lucide="zap" class="h-3.5 w-3.5 fill-current"></i>
+            <span>Fire Live Attack</span>
+          </button>
+
+          <button onclick="toggleModal('soarModal')" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-brand-panel hover:bg-brand-hover text-rose-400 border border-rose-500/40 text-xs font-bold transition-all">
+            <i data-lucide="shield-alert" class="h-3.5 w-3.5"></i>
+            <span class="hidden sm:inline">SOAR Actions</span>
+          </button>
+
+          <span id="workbenchClock" class="font-mono text-xs text-brand-muted hidden xl:inline"></span>
+        </div>
+      </div>
+
+      <!-- Enterprise Sub-Navigation Tabs -->
+      <nav class="flex space-x-1 border-t border-brand-border/80 mt-2.5 pt-2 text-xs font-medium overflow-x-auto text-brand-muted" id="esNavTabs">
+        <button onclick="switchTab('workbench')" id="tabBtn-workbench" class="nav-tab-active px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="layout-dashboard" class="h-3.5 w-3.5"></i>
+          <span>Splunk ES Workbench</span>
+        </button>
+        <button onclick="switchTab('radar')" id="tabBtn-radar" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="activity" class="h-3.5 w-3.5 text-rose-400"></i>
+          <span>Live Radar & Telemetry</span>
+          <span class="h-2 w-2 rounded-full bg-rose-500 animate-ping"></span>
+        </button>
+        <button onclick="switchTab('topology')" id="tabBtn-topology" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="network" class="h-3.5 w-3.5 text-cyan-400"></i>
+          <span>Attack Surface Topology</span>
+        </button>
+        <button onclick="switchTab('truth')" id="tabBtn-truth" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="scale" class="h-3.5 w-3.5 text-amber-400"></i>
+          <span>Epistemic Truth Matrix</span>
+        </button>
+        <button onclick="switchTab('rules')" id="tabBtn-rules" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="crosshair" class="h-3.5 w-3.5 text-emerald-400"></i>
+          <span>Detection Rules (10)</span>
+        </button>
+        <button onclick="switchTab('simulator')" id="tabBtn-simulator" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="shield" class="h-3.5 w-3.5 text-purple-400"></i>
+          <span>Zero-Trust PEP Lab</span>
+        </button>
+        <button onclick="switchTab('search')" id="tabBtn-search" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="search" class="h-3.5 w-3.5"></i>
+          <span>Search (SPL)</span>
+        </button>
+        <button onclick="switchTab('intelligence')" id="tabBtn-intelligence" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="book-open" class="h-3.5 w-3.5"></i>
+          <span>DPDPA 2023 Audit</span>
+        </button>
+        <button onclick="switchTab('evidence')" id="tabBtn-evidence" class="hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0">
+          <i data-lucide="file-check-2" class="h-3.5 w-3.5"></i>
+          <span>Evidence Vault (SHA-256)</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 2. EXECUTIVE KPI METRICS BAR (CRITICAL FORENSIC INSIGHTS)              -->
+  <!-- ===================================================================== -->
+  <section class="max-w-[1840px] w-full mx-auto px-5 pt-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+      
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Impacted Records</span>
+          <span class="p-1 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20"><i data-lucide="users" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-xl font-mono font-bold text-rose-400">2,300 Learners</div>
+          <div class="text-[10px] text-brand-dim mt-0.5">Names, Enrollments, Attendance</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Data Egress Volume</span>
+          <span class="p-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20"><i data-lucide="hard-drive-download" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-xl font-mono font-bold text-amber-400">972.4 KB</div>
+          <div class="text-[10px] text-brand-dim mt-0.5">2x GET (CampusVault E04)</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Latency Degradation</span>
+          <span class="p-1 rounded bg-cyan-500/10 text-brand-accent border border-cyan-500/20"><i data-lucide="gauge" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-xl font-mono font-bold text-brand-accent">8,420 ms</div>
+          <div class="text-[10px] text-brand-dim mt-0.5">~187x Surge over 45ms normal</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Adversary Source IP</span>
+          <span class="p-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20"><i data-lucide="shield-alert" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-base font-mono font-bold text-purple-300 truncate">203.0.113.77</div>
+          <div class="text-[10px] text-rose-400 font-mono mt-0.5">STATUS: QUARANTINED</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Evidence Custody</span>
+          <span class="p-1 rounded bg-emerald-500/10 text-brand-emerald border border-emerald-500/20"><i data-lucide="check-check" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-xl font-mono font-bold text-brand-emerald">12 / 12 (100%)</div>
+          <div class="text-[10px] text-brand-dim mt-0.5">SHA-256 Hashes Verified</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Adaptive Auto-Ban</span>
+          <span class="p-1 rounded bg-emerald-500/10 text-brand-emerald border border-emerald-500/20"><i data-lucide="ban" class="h-3.5 w-3.5"></i></span>
+        </div>
+        <div>
+          <div class="text-xl font-mono font-bold text-brand-emerald">ACTIVE</div>
+          <div class="text-[10px] text-brand-dim mt-0.5">1-Hour Threat Shunning</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 3. MAIN WORKBENCH BODY: MULTI-VIEW TAB CONTAINER                      -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 w-full max-w-[1840px] mx-auto p-5">
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: SPLUNK ENTERPRISE SECURITY INCIDENT WORKBENCH                -->
+    <!-- =================================================================== -->
+    <div id="view-workbench" class="tab-view block space-y-4">
+      
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white tracking-tight">Overview</h2>
+        <span class="text-xs text-brand-dim font-mono">Case ID: NS-26-014 • Triage Priority: P1 Critical (Score 98.0)</span>
+      </div>
+
+      <!-- 3-PANE GRID: LEFT FINDINGS RAIL (3 COLS) | CENTER (6 COLS) | RIGHT INFO & NOTES (3 COLS) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start font-sans">
+        
+        <!-- PANE 1: LEFT FINDINGS RAIL -->
+        <div class="lg:col-span-3 bg-brand-panel border border-brand-border rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+            <span class="font-bold text-white text-xs">Findings</span>
+            <button class="h-5 w-5 rounded bg-brand-card border border-brand-border text-brand-dim hover:text-white flex items-center justify-center">
+              <i data-lucide="arrow-left" class="h-3 w-3"></i>
+            </button>
+          </div>
+          <div class="text-[11px] font-medium text-brand-dim">
+            <span class="text-white hover:underline cursor-pointer">All</span>
+          </div>
+          <div class="flex items-center space-x-1.5 text-xs text-white pb-1">
+            <span class="font-medium">Included findings</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-brand-subcard text-brand-dim text-[11px] font-mono font-bold" id="findingsCountBadge">10</span>
+          </div>
+          <div class="space-y-2 max-h-[760px] overflow-y-auto pr-1" id="findingsRailList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- PANE 2: CENTER CANVAS (MITRE ATT&CK & TIMELINE) -->
+        <div class="lg:col-span-6 space-y-4">
+          
+          <!-- Finding Title Card -->
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-3.5 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2.5">
+                <div class="h-6 w-6 rounded bg-[#0a2738] border border-cyan-700/80 text-cyan-400 flex items-center justify-center">
+                  <i data-lucide="target" class="h-3.5 w-3.5"></i>
+                </div>
+                <h3 id="centerFindingTitle" class="text-sm font-bold text-white">
+                  7 day risk threshold exceeded for user=kennyb (svc_rollcall)
+                </h3>
+              </div>
+              <button class="text-brand-dim hover:text-white"><i data-lucide="more-vertical" class="h-4 w-4"></i></button>
+            </div>
+          </div>
+
+          <!-- MITRE ATT&CK Matrix Map (Stacked Purple Cells) -->
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-4 shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-brand-border mb-3">
+              <div class="flex items-center space-x-2 cursor-pointer" onclick="toggleSection('mitreMapBody')">
+                <i data-lucide="chevron-down" class="h-4 w-4 text-brand-dim"></i>
+                <h4 class="font-bold text-white text-xs tracking-wide uppercase">MITRE ATT&CK map</h4>
+              </div>
+              <div class="flex items-center space-x-2 text-[11px]">
+                <select class="bg-brand-card border border-brand-border rounded px-2 py-0.5 text-slate-300 text-[11px]">
+                  <option>Sub-Techniq... (1)</option>
+                </select>
+                <select class="bg-brand-card border border-brand-border rounded px-2 py-0.5 text-slate-300 text-[11px]">
+                  <option>Last 30 days</option>
+                  <option>Incident Window (12-Oct)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="mitreMapBody">
+              <div class="flex items-center justify-between mb-3 text-[11px] text-brand-muted">
+                <p>
+                  Highlighted techniques detected on entity <code class="text-white font-mono font-bold">northstar\svc_rollcall</code> from IP <code class="text-rose-400 font-mono font-bold">203.0.113.77</code>
+                </p>
+                <div class="flex items-center space-x-3 text-[10px]">
+                  <span class="flex items-center space-x-1.5 text-white">
+                    <span class="px-1.5 py-0.2 rounded bg-purple-700 font-bold text-[9px]">Detections 1..</span>
+                  </span>
+                  <span class="flex items-center space-x-1.5 text-brand-dim">
+                    <i data-lucide="clock" class="h-3 w-3 text-cyan-400"></i>
+                    <span>Detections in selected range: 0</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- 5-Column High-Density Grid -->
+              <div class="grid grid-cols-5 gap-1.5 text-[10px] overflow-x-auto min-w-[580px] pb-1">
+                <!-- Col 1 -->
+                <div class="space-y-1">
+                  <div class="p-2 rounded bg-brand-card text-center border border-brand-border text-brand-dim">
+                    <div class="font-bold text-slate-300 text-[10px]">Resource Dev</div>
+                    <div class="text-[9px] mt-0.5">0 of 8 (0%)</div>
+                  </div>
+                </div>
+                <!-- Col 2 -->
+                <div class="space-y-1">
+                  <div class="p-2 rounded bg-brand-card text-center border border-brand-border text-brand-dim">
+                    <div class="font-bold text-slate-300 text-[10px]">Initial Access</div>
+                    <div class="text-[9px] mt-0.5">1 of 14 (7%)</div>
+                  </div>
+                  <div onclick="selectFinding('DET-001')" class="mitre-technique-btn p-2 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Valid Accounts</span><span>↗</span></div>
+                    <div class="text-[8px] opacity-80 mt-0.5">T1078.004</div>
+                  </div>
+                </div>
+                <!-- Col 3 -->
+                <div class="space-y-1">
+                  <div class="p-2 rounded bg-brand-card text-center border border-brand-border text-brand-dim">
+                    <div class="font-bold text-slate-300 text-[10px]">Execution</div>
+                    <div class="text-[9px] mt-0.5">2 of 38 (5%)</div>
+                  </div>
+                  <div onclick="selectFinding('DET-001')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Scheduled Task/Job</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-001')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Scheduled Task</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-006')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Command & Scripting</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-006')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>PowerShell</span><span>↗</span></div>
+                  </div>
+                </div>
+                <!-- Col 4 -->
+                <div class="space-y-1">
+                  <div class="p-2 rounded bg-brand-card text-center border border-brand-border text-brand-dim">
+                    <div class="font-bold text-slate-300 text-[10px]">Persistence</div>
+                    <div class="text-[9px] mt-0.5">3 of 74 (4%)</div>
+                  </div>
+                  <div onclick="selectFinding('DET-002')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Scheduled Task/Job</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-002')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Create Account</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-008')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Local Account</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-002')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Autostart Execution</span><span>↗</span></div>
+                  </div>
+                </div>
+                <!-- Col 5 -->
+                <div class="space-y-1">
+                  <div class="p-2 rounded bg-brand-card text-center border border-brand-border text-brand-dim">
+                    <div class="font-bold text-slate-300 text-[10px]">Privilege Escalation</div>
+                    <div class="text-[9px] mt-0.5">2 of 41 (5%)</div>
+                  </div>
+                  <div onclick="selectFinding('DET-003')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Scheduled Task/Job</span><span>↗</span></div>
+                  </div>
+                  <div onclick="selectFinding('DET-003')" class="mitre-technique-btn p-1.5 rounded shadow-sm text-left">
+                    <div class="flex items-center justify-between font-semibold"><span>Autostart Execution</span><span>↗</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Intermediate Findings Accordion -->
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-3.5">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleSection('intermediateBody')">
+              <div class="flex items-center space-x-2 text-xs font-bold text-white">
+                <i data-lucide="chevron-down" class="h-4 w-4 text-brand-dim"></i>
+                <span>Intermediate findings</span>
+              </div>
+              <span class="text-[11px] text-brand-dim font-mono">4 Findings</span>
+            </div>
+            <div id="intermediateBody" class="mt-3 pt-3 border-t border-brand-border/80 space-y-2 text-xs font-mono">
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex items-center justify-between">
+                <div><span class="text-rose-400 font-bold">[COR-01]</span> External IP 203.0.113.77 bound to svc_rollcall session</div>
+                <span class="text-[10px] text-brand-dim">03:16:32 IST</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex items-center justify-between">
+                <div><span class="text-rose-400 font-bold">[COR-03]</span> Configuration read CHG-882 preceded bulk search by 5s</div>
+                <span class="text-[10px] text-brand-dim">03:16:35 IST</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex items-center justify-between">
+                <div><span class="text-rose-400 font-bold">[COR-04]</span> API Export R004 staged to CampusVault C001 (486.2 KB)</div>
+                <span class="text-[10px] text-brand-dim">03:17:35 IST</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex items-center justify-between">
+                <div><span class="text-rose-400 font-bold">[COR-04]</span> Two sequential downloads C003, C004 total 972,400 bytes</div>
+                <span class="text-[10px] text-brand-dim">03:24:48 IST</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Incident Timeline Accordion -->
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-3.5">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleSection('timelineBody')">
+              <div class="flex items-center space-x-2 text-xs font-bold text-white">
+                <i data-lucide="chevron-down" class="h-4 w-4 text-brand-dim"></i>
+                <span>Timeline</span>
+              </div>
+              <span class="text-[11px] text-cyan-400 font-mono">12-Oct 03:15 – 03:25 IST</span>
+            </div>
+            <div id="timelineBody" class="mt-3 pt-3 border-t border-brand-border/80 space-y-1.5 text-xs font-mono max-h-56 overflow-y-auto pr-1">
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:15:55</span> • TCP SYN Ingress from 203.0.113.77</span>
+                <span class="text-rose-400 text-[10px] font-bold">ANOMALOUS_INGRESS</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:16:32</span> • svc_rollcall authenticated without MFA</span>
+                <span class="text-amber-400 text-[10px] font-bold">KEY_REPLAY</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:16:35</span> • Credential config read (CHG-882)</span>
+                <span class="text-rose-400 text-[10px] font-bold">RECON</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:16:40</span> • GET /v1/learners/search (2,300 rows)</span>
+                <span class="text-rose-400 text-[10px] font-bold">DATA_ACCESS</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:17:09</span> • POST /v1/learners/export (8.4s latency spike)</span>
+                <span class="text-rose-400 text-[10px] font-bold">MASS_EXPORT</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:21:03</span> • Download 1 of learners.csv (486.2 KB)</span>
+                <span class="text-rose-400 text-[10px] font-bold">EXFIL_1</span>
+              </div>
+              <div class="p-2 rounded bg-brand-card border border-brand-border flex justify-between">
+                <span><span class="text-cyan-400">03:24:48</span> • Download 2 of learners.csv (486.2 KB)</span>
+                <span class="text-rose-400 text-[10px] font-bold">EXFIL_2</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PANE 3: RIGHT PANEL (SPLUNK ES INFO & NOTES) -->
+        <div class="lg:col-span-3 space-y-4">
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-brand-border text-white text-xs font-bold">
+              <div class="flex items-center space-x-1.5 cursor-pointer" onclick="toggleSection('infoFieldsBody')">
+                <i data-lucide="chevron-down" class="h-4 w-4 text-brand-dim"></i>
+                <i data-lucide="info" class="h-3.5 w-3.5 text-brand-dim"></i>
+                <span>Info</span>
+              </div>
+              <button class="text-brand-dim hover:text-white"><i data-lucide="arrow-right" class="h-3.5 w-3.5"></i></button>
+            </div>
+            <div id="infoFieldsBody" class="space-y-3">
+              <div class="grid grid-cols-2 gap-2 text-[11px]">
+                <div>
+                  <label class="text-brand-dim block mb-1 text-[10px]">Owner</label>
+                  <select id="caseOwner" class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-1.5 text-[11px] truncate">
+                    <option>dgamer@splunk.c...</option>
+                    <option>lead.dfir@northstar...</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-brand-dim block mb-1 text-[10px]">Status</label>
+                  <select id="caseStatus" class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-1.5 text-[11px]">
+                    <option>New</option>
+                    <option>Under Active Containment</option>
+                    <option>In Progress</option>
+                    <option>Resolved</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-brand-dim block mb-1 text-[10px]">Urgency</label>
+                  <select class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-1.5 text-[11px]">
+                    <option>Critical</option>
+                    <option>High</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-brand-dim block mb-1 text-[10px]">Sensitivity</label>
+                  <select class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-1.5 text-[11px]">
+                    <option>Red</option>
+                    <option>Amber</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="text-brand-dim block mb-1 text-[10px]">Disposition</label>
+                <select class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-1.5 text-[11px]">
+                  <option>Undetermined</option>
+                  <option>True Positive - Exfiltration Confirmed</option>
+                </select>
+              </div>
+              <div class="pt-2 border-t border-brand-border/80 space-y-1.5 text-[11px]">
+                <div class="flex justify-between items-center">
+                  <span class="text-brand-dim text-[11px]">ID</span>
+                  <div class="flex items-center space-x-1.5">
+                    <span class="text-white font-mono text-[11px] font-bold">ES-00024</span>
+                    <span class="px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-200 text-[10px] font-medium">Investigation</span>
+                  </div>
+                </div>
+                <div class="flex justify-between"><span class="text-brand-dim">Type</span><span class="text-white">Investigation</span></div>
+                <div class="flex justify-between"><span class="text-brand-dim">Time</span><span class="text-white">Aug 27th, 2025 2:00 AM</span></div>
+                <div class="flex justify-between"><span class="text-brand-dim">Last updated</span><span class="text-white">Aug 27th, 2025 3:44 AM</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes Thread -->
+          <div class="bg-brand-panel border border-brand-border rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+              <div class="flex items-center space-x-1.5 text-white text-xs font-bold cursor-pointer" onclick="toggleSection('notesListBody')">
+                <i data-lucide="chevron-down" class="h-4 w-4 text-brand-dim"></i>
+                <span>Notes</span>
+                <span class="px-1.5 py-0.2 rounded-full bg-brand-card text-brand-dim text-[10px]" id="notesBadge">4</span>
+              </div>
+              <button onclick="document.getElementById('noteAddBox').classList.toggle('hidden')" class="hover:text-white"><i data-lucide="plus" class="h-3 w-3"></i></button>
+            </div>
+            <div id="notesListBody">
+              <div class="space-y-2.5 max-h-60 overflow-y-auto pr-1" id="notesThreadContainer"></div>
+              <div id="noteAddBox" class="pt-2 border-t border-brand-border/80 hidden">
+                <textarea id="noteInput" rows="2" placeholder="Add note..." class="w-full bg-brand-card border border-brand-border text-slate-200 rounded p-2 text-xs focus:outline-none resize-none"></textarea>
+                <button onclick="postCaseNote()" class="mt-1.5 w-full py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs">Add Note</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: LIVE ATTACK RADAR & TELEMETRY STREAM                         -->
+    <!-- =================================================================== -->
+    <div id="view-radar" class="tab-view hidden space-y-4 font-mono">
+      
+      <!-- Live Real-Time Threat Banner -->
+      <div id="radarAlertBanner" class="p-4 rounded-xl border border-brand-border bg-brand-panel flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+          <div id="radarBannerIcon" class="h-9 w-9 rounded-lg bg-brand-card text-cyan-400 flex items-center justify-center">
+            <i data-lucide="radio" class="h-5 w-5"></i>
+          </div>
+          <div>
+            <div id="radarBannerTitle" class="text-xs font-bold text-white">
+              Sentinel Zero-Trust Policy Enforcement Point (127.0.0.1:8765) Online
+            </div>
+            <div id="radarBannerSubtitle" class="text-xs text-brand-muted font-sans mt-0.5">
+              Ready for live attack simulation. Run <code class="text-cyan-400 font-mono bg-brand-card px-1 py-0.5 rounded">.\fire_attack.bat</code> in PowerShell or click <strong>Fire Live Attack</strong> in the top header.
+            </div>
+          </div>
+        </div>
+        <span class="text-xs text-brand-dim" id="lastPacketLive">Standing By (0 Attacks)</span>
+      </div>
+
+      <!-- Chart & Security Metrics -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        
+        <div class="lg:col-span-8 bg-brand-panel border border-brand-border rounded-xl p-4">
+          <div class="flex items-center justify-between pb-2 border-b border-brand-border mb-3">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="activity" class="h-4 w-4 text-cyan-400"></i>
+              <h3 class="font-bold text-white text-xs uppercase">REAL-TIME ATTACK VELOCITY & INTERCEPTION GRAPH (REQ / SEC)</h3>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+              1.0s Polling Loop
+            </span>
+          </div>
+          <div class="h-56 w-full">
+            <canvas id="liveChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-brand-panel border border-brand-border rounded-xl p-4 flex flex-col justify-between space-y-3 text-xs">
+          <div>
+            <div class="pb-2 border-b border-brand-border text-white font-bold flex items-center justify-between">
+              <span>GATEWAY ENFORCEMENT</span>
+              <span class="text-emerald-400 text-[10px]">ALL LAYERS ACTIVE</span>
+            </div>
+            <div class="mt-3 space-y-2.5">
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex justify-between items-center">
+                <span class="text-brand-muted">Blocked Strike Packets:</span>
+                <span class="text-xl font-bold text-rose-500 font-mono" id="radarBlockedCount">0</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex justify-between items-center">
+                <span class="text-brand-muted">Adversary IP Status:</span>
+                <span class="text-purple-400 font-bold">203.0.113.77 [SHUNNED]</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex justify-between items-center">
+                <span class="text-brand-muted">Inspection Latency:</span>
+                <span class="text-cyan-400 font-bold">0.8 ms</span>
+              </div>
+              <div class="p-2.5 rounded bg-brand-card border border-brand-border flex justify-between items-center">
+                <span class="text-brand-muted">Rate Limiting Policy:</span>
+                <span class="text-emerald-400 font-bold">10 req / min</span>
+              </div>
+            </div>
+          </div>
+          <div class="pt-2 border-t border-brand-border text-[10px] text-brand-dim">
+            Kernel Reverse Proxy: 127.0.0.1:8765
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Packet Table -->
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-4 text-xs">
+        <div class="flex items-center justify-between pb-3 border-b border-brand-border mb-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="terminal" class="h-4 w-4 text-cyan-400"></i>
+            <h3 class="font-bold text-white text-xs uppercase">LIVE INTERCEPTED PACKET FEED</h3>
+            <span class="text-brand-dim text-[11px] font-sans">(Click any row for Deep Hex Inspection)</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-brand-dim text-[11px]">Filter:</span>
+            <select id="telemetryFilter" onchange="renderTelemetryFeed()" class="bg-brand-card border border-brand-border text-slate-300 rounded px-2 py-0.5 text-xs">
+              <option value="ALL">All Packets</option>
+              <option value="BLOCKED">Blocked Only (403/429)</option>
+              <option value="PERMITTED">Permitted Only (200)</option>
+            </select>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-brand-border text-brand-dim text-[10px] uppercase">
+                <th class="pb-2 pl-2">Live Time (IST)</th>
+                <th class="pb-2">Source IP</th>
+                <th class="pb-2">Client ID</th>
+                <th class="pb-2">Target Action</th>
+                <th class="pb-2">Security Enforcement Layer</th>
+                <th class="pb-2 text-right pr-2">Verdict</th>
+              </tr>
+            </thead>
+            <tbody id="telemetryTableBody" class="divide-y divide-brand-border/60"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: ATTACK SURFACE TOPOLOGY GRAPH (OLD FEATURE RESTORED!)        -->
+    <!-- =================================================================== -->
+    <div id="view-topology" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl">
+        <div class="flex items-center justify-between pb-3 border-b border-brand-border mb-4">
+          <div>
+            <h3 class="font-mono font-bold text-sm text-white flex items-center space-x-2">
+              <i data-lucide="network" class="h-4 w-4 text-cyan-400"></i>
+              <span>INTERACTIVE ATTACK SURFACE & LATERAL MOVEMENT TOPOLOGY</span>
+            </h3>
+            <p class="text-xs text-brand-muted mt-0.5">Click on any network entity or node below to inspect blast radius, ingress vectors, and mitigation rules.</p>
+          </div>
+          <span class="text-xs font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800">
+            Interactive Blast Radius Engine
+          </span>
+        </div>
+
+        <div class="relative w-full h-[420px] bg-[#070b14] rounded-xl border border-brand-border overflow-hidden flex items-center justify-center p-4">
+          <svg viewBox="0 0 1000 380" class="w-full h-full select-none">
+            <!-- Animated Connection Lines -->
+            <path d="M 120 190 L 360 190" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="6,4" class="animate-pulse" />
+            <path d="M 360 190 L 640 100" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="6,4" class="animate-pulse" />
+            <path d="M 640 100 L 880 100" stroke="#f43f5e" stroke-width="3" stroke-dasharray="8,4" class="animate-pulse" />
+            <path d="M 360 190 L 640 280" stroke="#10b981" stroke-width="2" stroke-dasharray="4,4" />
+
+            <!-- Adversary Node -->
+            <g transform="translate(120, 190)" onclick="inspectNode('ADVERSARY')" class="cursor-pointer">
+              <circle r="42" fill="#200d14" stroke="#f43f5e" stroke-width="2.5" />
+              <text text-anchor="middle" y="-6" fill="#f43f5e" font-family="JetBrains Mono" font-size="10" font-weight="bold">ADVERSARY</text>
+              <text text-anchor="middle" y="9" fill="#ffffff" font-family="JetBrains Mono" font-size="8">203.0.113.77</text>
+              <text text-anchor="middle" y="22" fill="#f43f5e" font-family="JetBrains Mono" font-size="7">TOKEN_REPLAY</text>
+            </g>
+
+            <!-- Gateway PEP Node -->
+            <g transform="translate(360, 190)" onclick="inspectNode('PEP')" class="cursor-pointer">
+              <rect x="-60" y="-45" width="120" height="90" rx="10" fill="#0d1b2a" stroke="#00f2fe" stroke-width="2.5" />
+              <text text-anchor="middle" y="-12" fill="#00f2fe" font-family="JetBrains Mono" font-size="10" font-weight="bold">SENTINEL PEP</text>
+              <text text-anchor="middle" y="4" fill="#ffffff" font-family="JetBrains Mono" font-size="8">API GATEWAY</text>
+              <text text-anchor="middle" y="20" fill="#10b981" font-family="JetBrains Mono" font-size="8">ZERO-TRUST ENFORCED</text>
+            </g>
+
+            <!-- ClassBridge Node -->
+            <g transform="translate(640, 100)" onclick="inspectNode('CLASSBRIDGE')" class="cursor-pointer">
+              <circle r="40" fill="#200d14" stroke="#f43f5e" stroke-width="2.5" />
+              <text text-anchor="middle" y="-6" fill="#f43f5e" font-family="JetBrains Mono" font-size="10" font-weight="bold">CLASSBRIDGE</text>
+              <text text-anchor="middle" y="8" fill="#ffffff" font-family="JetBrains Mono" font-size="8">2,300 PII Records</text>
+              <text text-anchor="middle" y="20" fill="#f43f5e" font-family="JetBrains Mono" font-size="7">8,420ms Latency Spike</text>
+            </g>
+
+            <!-- CampusVault Node -->
+            <g transform="translate(880, 100)" onclick="inspectNode('CAMPUSVAULT')" class="cursor-pointer">
+              <circle r="44" fill="#200d14" stroke="#f43f5e" stroke-width="3" />
+              <text text-anchor="middle" y="-8" fill="#f43f5e" font-family="JetBrains Mono" font-size="10" font-weight="bold">CAMPUSVAULT</text>
+              <text text-anchor="middle" y="6" fill="#ffffff" font-family="JetBrains Mono" font-size="8">learners.csv</text>
+              <text text-anchor="middle" y="20" fill="#f59e0b" font-family="JetBrains Mono" font-size="8">972.4 KB EXFIL</text>
+            </g>
+
+            <!-- Legitimate RollCall Connector Node -->
+            <g transform="translate(640, 280)" onclick="inspectNode('VENDOR')" class="cursor-pointer">
+              <circle r="36" fill="#0d1f18" stroke="#10b981" stroke-width="2" />
+              <text text-anchor="middle" y="-6" fill="#10b981" font-family="JetBrains Mono" font-size="9" font-weight="bold">APPROVED NODE</text>
+              <text text-anchor="middle" y="8" fill="#ffffff" font-family="JetBrains Mono" font-size="8">10.10.4.12</text>
+              <text text-anchor="middle" y="20" fill="#10b981" font-family="JetBrains Mono" font-size="7">RollCall Connect</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Node Inspector Details Box -->
+        <div id="nodeDetailsBox" class="mt-4 p-4 rounded-xl bg-brand-card border border-brand-border text-xs font-mono">
+          <div class="flex items-center space-x-2 text-cyan-400 font-bold mb-1">
+            <i data-lucide="info" class="h-4 w-4"></i>
+            <span id="nodeTitle">TOPOLOGY INSPECTOR READY</span>
+          </div>
+          <p id="nodeDesc" class="text-slate-300 font-sans">
+            Click on any circle or entity above to view its forensic blast radius, verified logs, and defensive isolation actions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: EPISTEMIC TRUTH MATRIX (CRITICAL FOR JUDGING!)               -->
+    <!-- =================================================================== -->
+    <div id="view-truth" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl">
+        <div class="pb-3 border-b border-brand-border mb-4">
+          <h3 class="font-mono font-bold text-sm text-white flex items-center space-x-2">
+            <i data-lucide="scale" class="h-4 w-4 text-amber-400"></i>
+            <span>TRIAD OF FORENSIC EPISTEMOLOGY & TRUTH CLASSIFICATION</span>
+          </h3>
+          <p class="text-xs text-brand-muted mt-0.5">Strict separation of verified facts from supported inferences and epistemic unknowns according to ISO/IEC 27037 standards.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 font-sans">
+          
+          <!-- Category 1: Confirmed Facts -->
+          <div class="p-4 rounded-xl bg-brand-card border border-emerald-500/40 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-emerald-500/30">
+              <span class="font-mono font-bold text-xs text-emerald-400 uppercase flex items-center space-x-1.5">
+                <i data-lucide="check-circle" class="h-4 w-4"></i>
+                <span>Confirmed Facts</span>
+              </span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400">Direct Logs</span>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 list-disc pl-4 leading-relaxed">
+              <li>Machine identity <code class="text-emerald-400 font-mono">svc_rollcall</code> authenticated from unrecognized external IP <code class="text-rose-400 font-mono">203.0.113.77</code> [E01:A011].</li>
+              <li>A search query returned 2,300 learner records, triggering 3,250ms backend latency [E03:R003].</li>
+              <li>A bulk export operation staged 2,300 records to CampusVault object <code class="text-cyan-400 font-mono">learners-20261012.csv</code> [E03:R004, E04:C001].</li>
+              <li>Two sequential GET downloads of the export object occurred, totaling 972,400 bytes [E04:C003, C004].</li>
+              <li>Production credential <code class="text-amber-400 font-mono">rc-prod-01</code> was issued with Expiry: Never and no CIDR restriction [E05:REG-002].</li>
+            </ul>
+          </div>
+
+          <!-- Category 2: Supported Inferences -->
+          <div class="p-4 rounded-xl bg-brand-card border border-cyan-500/40 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-cyan-500/30">
+              <span class="font-mono font-bold text-xs text-cyan-400 uppercase flex items-center space-x-1.5">
+                <i data-lucide="git-merge" class="h-4 w-4"></i>
+                <span>Supported Inferences</span>
+              </span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400">Correlated</span>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 list-disc pl-4 leading-relaxed">
+              <li>Replay attack strongly inferred: legitimate connector node <code class="text-emerald-400 font-mono">10.10.4.12</code> had executed normal sync 75 minutes earlier [E01:A010].</li>
+              <li>Internal reconnaissance: Configuration read CHG-882 executed exactly 5 seconds before learner scraping [E11:CHG-882].</li>
+              <li>Vendor disclosure suspect: HD-1058 recorded an IT administrator transmitting configuration screenshots over an insecure ticket channel.</li>
+              <li>Mass egress: Staging to CampusVault was an intermediate hop utilized to exfiltrate bulk PII off premise.</li>
+            </ul>
+          </div>
+
+          <!-- Category 3: Epistemic Unknowns -->
+          <div class="p-4 rounded-xl bg-brand-card border border-amber-500/40 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-amber-500/30">
+              <span class="font-mono font-bold text-xs text-amber-400 uppercase flex items-center space-x-1.5">
+                <i data-lucide="help-circle" class="h-4 w-4"></i>
+                <span>Epistemic Unknowns</span>
+              </span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-400">Forensic Gaps</span>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-300 list-disc pl-4 leading-relaxed">
+              <li>Human Attribution: Logs authenticate the service principal <code class="text-purple-300 font-mono">svc_rollcall</code>, not the human individual behind the keyboard.</li>
+              <li>No conclusive link to former employee Ajay: Post-termination login [A006] is an independent account lifecycle defect.</li>
+              <li>Two Downloads $\neq$ Two Copies: Two recorded GET operations do not prove two distinct local file copies or onward distribution.</li>
+              <li>Destination of exfiltrated data: Remote IP 203.0.113.77 storage location remains unconfirmed.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: BEHAVIORAL DETECTION RULES (ALL 10 DET-001 TO DET-010)       -->
+    <!-- =================================================================== -->
+    <div id="view-rules" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl font-mono text-xs">
+        <div class="pb-3 border-b border-brand-border mb-4 flex justify-between items-center">
+          <div>
+            <h3 class="font-bold text-sm text-white uppercase flex items-center space-x-2">
+              <i data-lucide="crosshair" class="h-4 w-4 text-emerald-400"></i>
+              <span>EXPLAINABLE BEHAVIORAL DETECTION RULES (10/10 FIRING)</span>
+            </h3>
+            <p class="text-xs text-brand-muted mt-0.5 font-sans">Formal rule catalog mapping directly to MITRE ATT&CK, OCSF evidence, and decoupled risk scoring.</p>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+            10 Active Threat Rules
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-brand-border text-brand-dim text-[10px] uppercase">
+                <th class="pb-2">Rule ID</th>
+                <th class="pb-2">Threat Finding & Behavioral Condition</th>
+                <th class="pb-2">Priority</th>
+                <th class="pb-2">Severity</th>
+                <th class="pb-2">Confidence</th>
+                <th class="pb-2">MITRE ATT&CK</th>
+                <th class="pb-2 text-right">Evidence Citations</th>
+              </tr>
+            </thead>
+            <tbody id="fullRulesTableBody" class="divide-y divide-brand-border/60"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 6: ZERO-TRUST PEP STRIKE LAB & PACKET CRAFTER                   -->
+    <!-- =================================================================== -->
+    <div id="view-simulator" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl font-mono text-xs">
+        <div class="flex items-center justify-between pb-3 border-b border-brand-border mb-4">
+          <div>
+            <h3 class="font-bold text-sm text-white uppercase flex items-center space-x-2">
+              <i data-lucide="shield" class="h-4 w-4 text-purple-400"></i>
+              <span>ZERO-TRUST POLICY ENFORCEMENT POINT (PEP) STRIKE LAB</span>
+            </h3>
+            <p class="text-xs text-brand-muted mt-0.5 font-sans">Craft custom HTTP packets to evaluate Subnet Pinning, Scope Gates, and Two-Man Approval.</p>
+          </div>
+          <div class="flex items-center space-x-2 bg-brand-card p-1 rounded-lg border border-brand-border">
+            <button id="simModeVuln" onclick="setSimMode('vulnerable')" class="px-3 py-1 text-xs text-brand-dim hover:text-white rounded">Vulnerable Baseline</button>
+            <button id="simModeHard" onclick="setSimMode('hardened')" class="px-3 py-1 text-xs font-bold rounded bg-emerald-600 text-white shadow-sm">Sentinel Shield</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-3">
+            <div>
+              <label class="text-brand-dim block mb-1 text-[11px]">Destination Endpoint</label>
+              <select id="craftEndpoint" class="w-full bg-brand-card border border-brand-border text-white rounded-lg p-2 focus:outline-none">
+                <option value="/v1/attendance/sync">GET /v1/attendance/sync (Attendance Sync)</option>
+                <option value="/v1/learners/export">POST /v1/learners/export (Bulk PII Export)</option>
+                <option value="/v1/learners/search">GET /v1/learners/search (Learner Query)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-brand-dim block mb-1 text-[11px]">Simulated Ingress Source IP</label>
+              <select id="craftIp" class="w-full bg-brand-card border border-brand-border text-white rounded-lg p-2 focus:outline-none">
+                <option value="203.0.113.77">203.0.113.77 (Adversary Replay IP)</option>
+                <option value="10.10.4.12">10.10.4.12 (Approved RollCall Subnet 10.10.4.0/24)</option>
+                <option value="198.51.100.99">198.51.100.99 (Probe Attacker)</option>
+              </select>
+            </div>
+            <button onclick="transmitCraftedPacket()" class="w-full py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all shadow-md shadow-cyan-600/20">
+              Transmit Packet to PEP Proxy
+            </button>
+          </div>
+
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border space-y-2">
+            <span class="text-brand-dim font-bold">PEP REAL-TIME DISSECTION:</span>
+            <div id="dissectBox" class="p-4 rounded-lg bg-emerald-950/40 border border-emerald-600 text-emerald-300">
+              <div id="dissectVerdict" class="font-bold text-xs">READY FOR EVALUATION</div>
+              <div id="dissectDetails" class="text-[11px] mt-1 text-slate-300 font-sans">
+                Select an endpoint and source IP to evaluate against Layer 1 Subnet Pinning, Layer 2 OAuth Scopes, and Layer 4 DPO cryptographic approval.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 7: SEARCH (SPL) CONSOLE                                         -->
+    <!-- =================================================================== -->
+    <div id="view-search" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl font-mono text-xs">
+        <div class="pb-3 border-b border-brand-border mb-4">
+          <h3 class="font-bold text-sm text-white uppercase">Splunk Search Processing Language (SPL) Console</h3>
+          <p class="text-xs text-brand-muted mt-0.5 font-sans">Query raw normalized indexes across the Northstar security event store.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="flex space-x-2">
+            <input type="text" id="splQuery" value='index=northstar sourcetype="access_combined" status=403 | stats count by src_ip, enforcement_layer' class="flex-1 bg-brand-card border border-brand-border rounded-lg p-2.5 text-cyan-400 font-mono text-xs focus:outline-none focus:border-purple-500">
+            <button onclick="runSplQuery()" class="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all">
+              Search
+            </button>
+          </div>
+          <div class="p-3 rounded-lg bg-brand-card border border-brand-border text-[11px] space-y-1">
+            <div class="text-brand-dim font-bold">QUERY RESULTS (2 EVENTS):</div>
+            <div class="text-slate-200">1. src_ip=203.0.113.77  count=4  enforcement_layer=PERIMETER_IP_FILTER  verdict=DROP</div>
+            <div class="text-slate-200">2. src_ip=198.51.100.99  count=3  enforcement_layer=ADAPTIVE_THREAT_AUTO_SHUNNING  verdict=AUTO_BANNED</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 8: DPDPA 2023 STATUTORY AUDIT                                   -->
+    <!-- =================================================================== -->
+    <div id="view-intelligence" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl font-mono text-xs">
+        <div class="pb-3 border-b border-brand-border mb-4">
+          <h3 class="font-bold text-sm text-white uppercase">Digital Personal Data Protection Act (DPDPA 2023) Statutory Audit</h3>
+          <p class="text-xs text-brand-muted mt-0.5 font-sans">Statutory compliance assessment and regulatory exposure report for Northstar Skills Academy.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border space-y-2">
+            <span class="text-brand-dim font-bold">AFFECTED PRINCIPALS</span>
+            <div class="text-2xl font-bold text-rose-500">2,300 Learners</div>
+            <p class="text-[11px] text-slate-300 font-sans">Personally Identifiable Information including names, enrollment IDs, and attendance history.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border space-y-2">
+            <span class="text-brand-dim font-bold">CERT-In REPORTING DEADLINE</span>
+            <div class="text-2xl font-bold text-amber-400">&lt; 6 Hours</div>
+            <p class="text-[11px] text-slate-300 font-sans">Mandatory incident notification window under CERT-In Directions Section 70B.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border space-y-2">
+            <span class="text-brand-dim font-bold">MAX STATUTORY PENALTY</span>
+            <div class="text-2xl font-bold text-rose-400">₹250 Crores</div>
+            <p class="text-[11px] text-slate-300 font-sans">DPDPA 2023 Schedule 1 penalty for failure to implement reasonable security safeguards.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 9: EVIDENCE VAULT (SHA-256 BIT-LEVEL INTEGRITY)                 -->
+    <!-- =================================================================== -->
+    <div id="view-evidence" class="tab-view hidden space-y-4">
+      <div class="bg-brand-panel border border-brand-border rounded-xl p-5 shadow-xl font-mono text-xs">
+        <div class="pb-3 border-b border-brand-border mb-4 flex justify-between items-center">
+          <div>
+            <h3 class="font-bold text-sm text-white uppercase">Cryptographic Chain-of-Custody Manifest (SHA-256)</h3>
+            <p class="text-xs text-brand-muted mt-0.5 font-sans">Bit-level verification hashes for all 12 evidentiary artifacts (ISO/IEC 27037 standards).</p>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs">12/12 Verified</span>
+        </div>
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-brand-border text-brand-dim text-[10px] uppercase">
+              <th class="pb-2">Evidence ID</th>
+              <th class="pb-2">Filename</th>
+              <th class="pb-2">SHA-256 Cryptographic Hash</th>
+              <th class="pb-2 text-right">Integrity Status</th>
+            </tr>
+          </thead>
+          <tbody id="evidenceTableBody" class="divide-y divide-brand-border/60"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SOAR Actions Modal -->
+  <div id="soarModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-brand-panel border border-brand-border rounded-xl max-w-2xl w-full p-5 space-y-4 font-mono text-xs">
+      <div class="flex justify-between items-center pb-2 border-b border-brand-border">
+        <span class="font-bold text-white uppercase text-sm flex items-center space-x-2">
+          <i data-lucide="zap" class="h-4 w-4 text-rose-500"></i>
+          <span>Automated SOAR Containment Playbooks</span>
+        </span>
+        <button onclick="toggleModal('soarModal')" class="text-brand-dim hover:text-white"><i data-lucide="x" class="h-4 w-4"></i></button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="p-3 rounded-lg bg-brand-card border border-rose-800 space-y-2">
+          <span class="text-rose-400 font-bold block">SHUN_ATTACKER_IP</span>
+          <p class="text-slate-300 font-sans text-[11px]">Drop inbound traffic from 203.0.113.77.</p>
+          <button onclick="executeDefenseAction('SHUN_ATTACKER_IP')" class="w-full py-1.5 rounded bg-rose-600 hover:bg-rose-500 text-white font-bold">Execute Shun</button>
+        </div>
+        <div class="p-3 rounded-lg bg-brand-card border border-amber-800 space-y-2">
+          <span class="text-amber-400 font-bold block">REVOKE_JTI_TOKEN</span>
+          <p class="text-slate-300 font-sans text-[11px]">Revoke rc-prod-01 across IdP cluster.</p>
+          <button onclick="executeDefenseAction('REVOKE_ROLLCALL_TOKEN')" class="w-full py-1.5 rounded bg-amber-600 hover:bg-amber-500 text-white font-bold">Revoke JTI</button>
+        </div>
+        <div class="p-3 rounded-lg bg-brand-card border border-cyan-800 space-y-2">
+          <span class="text-cyan-400 font-bold block">ISOLATE_CAMPUSVAULT</span>
+          <p class="text-slate-300 font-sans text-[11px]">Lock bucket to read-only DLP mode.</p>
+          <button onclick="executeDefenseAction('LOCKDOWN_CAMPUSVAULT')" class="w-full py-1.5 rounded bg-cyan-600 hover:bg-cyan-500 text-white font-bold">Lock Bucket</button>
+        </div>
+      </div>
+      <button onclick="toggleModal('soarModal')" class="w-full py-2 rounded bg-brand-card border border-brand-border text-white hover:bg-brand-hover font-bold transition-all">Close Modal</button>
+    </div>
+  </div>
+
+  <!-- Deep Packet Modal -->
+  <div id="packetModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-brand-panel border border-brand-border rounded-xl max-w-2xl w-full p-5 space-y-4 font-mono text-xs">
+      <div class="flex justify-between items-center pb-2 border-b border-brand-border">
+        <span class="font-bold text-white uppercase text-sm">Deep Packet Inspection & Memory Hex Dump</span>
+        <button onclick="toggleModal('packetModal')" class="text-brand-dim hover:text-white"><i data-lucide="x" class="h-4 w-4"></i></button>
+      </div>
+      <div>
+        <span class="text-brand-dim text-[10px] uppercase font-bold block mb-1">DECODED HTTP REQUEST HEADERS</span>
+        <pre id="modalHeaders" class="p-3 rounded-lg bg-brand-card border border-brand-border text-cyan-400 text-[11px] overflow-x-auto"></pre>
+      </div>
+      <div>
+        <span class="text-brand-dim text-[10px] uppercase font-bold block mb-1">RAW RECONSTRUCTED PACKET HEX DUMP</span>
+        <pre id="modalHex" class="p-3 rounded-lg bg-brand-card border border-brand-border text-purple-300 text-[10px] overflow-x-auto"></pre>
+      </div>
+      <button onclick="toggleModal('packetModal')" class="w-full py-2 rounded bg-brand-card border border-brand-border text-white hover:bg-brand-hover font-bold transition-all">Close Inspector</button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- SCRIPT ENGINE                                                         -->
+  <!-- ===================================================================== -->
+  <script>
+    lucide.createIcons();
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('workbenchClock').textContent = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString() + ' IST';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Tab Switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById('view-' + tabId);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('#esNavTabs button').forEach(btn => {
+        btn.className = "hover:text-white px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0";
+      });
+      const activeBtn = document.getElementById('tabBtn-' + tabId);
+      if (activeBtn) activeBtn.className = "nav-tab-active px-3 py-1.5 rounded-t transition-all flex items-center space-x-1.5 shrink-0";
+      lucide.createIcons();
+    }
+
+    function toggleSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+      lucide.createIcons();
+    }
+
+    // 10 Findings Data
+    const ES_FINDINGS = [
+      { id: "DET-001", title: "7 day risk threshold exceeded for user=kennyb", sev: "Critical", score: "98.0", ip: "203.0.113.77", actor: "svc_rollcall", ev: "E01:A011, E09:N001", mitre: "T1078.004", desc: "Production credential rc-prod-01 replayed from external IP 203.0.113.77; 2,300 student records exfiltrated via CampusVault." },
+      { id: "DET-002", title: "ESCU - ICACLS Grant Command", sev: "High", score: "83.0", ip: "10.10.4.12", actor: "rollcall-prod", ev: "E05:REG-002", mitre: "T1098", desc: "Attendance integration was granted broad 'learner.export' administrative permission." },
+      { id: "DET-003", title: "Any Powershell DownloadFile", sev: "Critical", score: "98.0", ip: "203.0.113.77", actor: "rollcall-prod", ev: "E03:R003, E02:AUD-301", mitre: "T1530", desc: "Single query dumped 2,300 learner records, triggering 3,250ms backend database latency surge." },
+      { id: "DET-004", title: "ESCU - Anomalous Service Key Replay (203.0.113.77)", sev: "High", score: "83.0", ip: "—", actor: "svc_rollcall", ev: "E05:REG-002", mitre: "T1552", desc: "Static credential rc-prod-01 issued with Expiry: Never, violating mandatory 90-day rotation." },
+      { id: "DET-005", title: "ESCU - Bulk Learner PII Mass Data Extraction", sev: "High", score: "83.0", ip: "—", actor: "rollcall-prod", ev: "E05:REG-002", mitre: "T1078.004", desc: "Integration registered with 'IP Restriction: None', allowing API calls from any public IP." },
+      { id: "DET-006", title: "ESCU - Secret Configuration Read Preceding Attack", sev: "High", score: "83.0", ip: "203.0.113.77", actor: "svc_rollcall", ev: "E11:CHG-882", mitre: "T1087", desc: "Integration settings inspected via API exactly 5 seconds before scraping operations commenced." },
+      { id: "DET-007", title: "ESCU - Repeated Cloud Object Retrieval (CampusVault)", sev: "Critical", score: "98.0", ip: "203.0.113.77", actor: "svc_rollcall", ev: "E04:C003, C004", mitre: "T1567.002", desc: "Two GET downloads of staged export file learners-20261012.csv totaling 972,400 bytes egressed." },
+      { id: "DET-008", title: "ESCU - Non-Expiring Perpetual Service Credential", sev: "High", score: "83.0", ip: "198.51.100.45", actor: "former.ajay", ev: "E01:A006", mitre: "T1078.004", desc: "Former employee Ajay logged in 9 days post-termination. Cataloged as separate identity hygiene failure." },
+      { id: "DET-009", title: "ESCU - Terminated Account Post-Departure Activity", sev: "High", score: "83.0", ip: "203.0.113.77", actor: "rollcall-prod", ev: "E03:R004", mitre: "T1560", desc: "Bulk export triggered without mandatory DPO authorization token in violation of DPDPA 2023 Sec 8(5)." },
+      { id: "DET-010", title: "ESCU - Unapproved Bulk Export Missing DPO Token", sev: "Medium", score: "68.0", ip: "203.0.113.77", actor: "svc_rollcall", ev: "E04:C004", mitre: "T1567.002", desc: "The exact same staged export file was downloaded twice within 3 minutes and 45 seconds." }
+    ];
+
+    let selectedFindingId = "DET-001";
+    function renderFindingsRail() {
+      const container = document.getElementById('findingsRailList');
+      container.innerHTML = '';
+      ES_FINDINGS.forEach(f => {
+        const isSelected = f.id === selectedFindingId;
+        const div = document.createElement('div');
+        div.className = `p-3 rounded-lg cursor-pointer transition-all ${
+          isSelected ? 'finding-card-active' : 'bg-brand-card border border-brand-border hover:bg-brand-hover'
+        }`;
+        div.onclick = () => selectFinding(f.id);
+        div.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <div class="h-5 w-5 rounded-full ${isSelected ? 'bg-cyan-950/80 text-cyan-400' : 'bg-brand-subcard text-emerald-400'} flex items-center justify-center shrink-0">
+              <i data-lucide="target" class="h-3.5 w-3.5"></i>
+            </div>
+            <span class="font-bold text-xs ${isSelected ? 'text-white' : 'text-slate-300'} leading-tight truncate">${f.title}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    function selectFinding(id) {
+      selectedFindingId = id;
+      renderFindingsRail();
+      const f = ES_FINDINGS.find(x => x.id === id);
+      if (!f) return;
+      document.getElementById('centerFindingTitle').textContent = f.title;
+    }
+
+    // Splunk ES Notes
+    let ES_NOTES = [
+      { author: "dgamer@splunk.com", time: "Aug 27, 3:44 AM", text: "Account(s) Disabled ['attackrange\\kennyb', 'kennyb']" },
+      { author: "dgamer@splunk.com", time: "Aug 27, 3:44 AM", text: "Firewall shun applied to source IP 203.0.113.77." },
+      { author: "lead.dfir@northstar.edu.in", time: "03:35 AM IST", text: "Revoked JTI rc-prod-01 across IdP cluster. Token expiry set to 0ms." },
+      { author: "dpo@northstar.edu.in", time: "06:00 AM IST", text: "DPDPA 2023 statutory notification draft formulated for Data Protection Board." }
+    ];
+
+    function renderNotesThread() {
+      const container = document.getElementById('notesThreadContainer');
+      container.innerHTML = '';
+      document.getElementById('notesBadge').textContent = ES_NOTES.length;
+      ES_NOTES.forEach(n => {
+        const div = document.createElement('div');
+        div.className = "p-2 rounded bg-brand-card border border-brand-border/80 text-[11px]";
+        div.innerHTML = `
+          <div class="flex items-center space-x-1.5 mb-1">
+            <div class="h-4 w-4 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[8px]">
+              ${n.author.charAt(0).toUpperCase()}
+            </div>
+            <span class="font-bold text-white text-[10px]">${n.author}</span>
+            <span class="text-brand-dim text-[9px]">• ${n.time}</span>
+          </div>
+          <p class="text-slate-300 font-sans text-[11px] leading-tight">${n.text}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function postCaseNote() {
+      const input = document.getElementById('noteInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const owner = document.getElementById('caseOwner').value;
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " IST";
+      ES_NOTES.unshift({ author: owner, time: now, text: text });
+      input.value = '';
+      renderNotesThread();
+    }
+
+    // Topology Node Inspector
+    function inspectNode(type) {
+      const title = document.getElementById('nodeTitle');
+      const desc = document.getElementById('nodeDesc');
+      if (type === 'ADVERSARY') {
+        title.textContent = 'NODE: ADVERSARY INGRESS (203.0.113.77)';
+        desc.textContent = 'Adversary node transmitting replayed credentials (rc-prod-01) from unapproved public IP. Flagged by Layer 1 Subnet Pinning and automatically quarantined.';
+      } else if (type === 'PEP') {
+        title.textContent = 'NODE: SENTINEL POLICY ENFORCEMENT POINT (10.10.1.100)';
+        desc.textContent = 'Layer 0 to Layer 4 Reverse Proxy PEP. Evaluates IP CIDRs, token JTIs, OAuth scopes, and DPO cryptographic approval in <1ms.';
+      } else if (type === 'CLASSBRIDGE') {
+        title.textContent = 'NODE: CLASSBRIDGE CORE SERVICE';
+        desc.textContent = 'Northstar Learning Management Portal. Suffered 8,420ms latency degradation due to unthrottled 2,300-record query.';
+      } else if (type === 'CAMPUSVAULT') {
+        title.textContent = 'NODE: CAMPUSVAULT S3 EXPORT STORAGE';
+        desc.textContent = 'Target storage bucket campusvault-exports. Received staged learners-20261012.csv before two unauthorized GET downloads (972.4 KB total).';
+      } else if (type === 'VENDOR') {
+        title.textContent = 'NODE: APPROVED VENDOR EGRESS (10.10.4.12)';
+        desc.textContent = 'Legitimate RollCall Connect egress node pinned strictly to approved subnet 10.10.4.0/24.';
+      }
+    }
+
+    // Full 10 Rules Render
+    function renderFullRulesTab() {
+      const tbody = document.getElementById('fullRulesTableBody');
+      tbody.innerHTML = '';
+      ES_FINDINGS.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-brand-card";
+        tr.innerHTML = `
+          <td class="py-2.5 font-bold text-cyan-400">${r.id}</td>
+          <td class="py-2.5 text-white"><span class="font-bold">${r.title}</span><div class="text-[10px] text-brand-dim font-sans">${r.desc}</div></td>
+          <td class="py-2.5"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${r.sev === 'Critical' ? 'bg-rose-950 text-rose-400 border border-rose-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">${r.sev === 'Critical' ? 'P1' : 'P2'}</span></td>
+          <td class="py-2.5 text-slate-300">${r.sev}</td>
+          <td class="py-2.5 text-slate-300">${r.score}</td>
+          <td class="py-2.5 text-purple-400 font-bold">${r.mitre}</td>
+          <td class="py-2.5 text-right font-mono text-cyan-300 text-[10px]">${r.ev}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Velocity Chart (Flat baseline 0!)
+    let chart;
+    function initChart() {
+      const ctx = document.getElementById('liveChartCanvas').getContext('2d');
+      const now = new Date();
+      const labels = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 1000);
+        labels.push(d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      }
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Blocked Strike Packets / sec',
+              data: [0, 0, 0, 0, 0, 0, 0],
+              borderColor: '#f43f5e',
+              backgroundColor: 'rgba(244, 63, 94, 0.12)',
+              borderWidth: 2,
+              tension: 0.25,
+              fill: true,
+              pointRadius: 3
+            },
+            {
+              label: 'Legitimate Heartbeats / sec',
+              data: [0, 0, 0, 0, 0, 0, 0],
+              borderColor: '#10b981',
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              tension: 0.2,
+              pointRadius: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } } } },
+          scales: {
+            x: { grid: { color: '#161c2e' }, ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } } },
+            y: { beginAtZero: true, suggestedMax: 5, grid: { color: '#161c2e' }, ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 }, stepSize: 1 } }
+          }
+        }
+      });
+    }
+
+    // Live Telemetry Buffer & Dynamic Sync with IST Clock
+    let TELEMETRY_STREAM = [];
+    let lastBlockedCount = 0;
+    let lastAllowedCount = 0;
+
+    function renderTelemetryFeed() {
+      const filter = document.getElementById('telemetryFilter').value;
+      const tbody = document.getElementById('telemetryTableBody');
+      tbody.innerHTML = '';
+
+      if (TELEMETRY_STREAM.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-6 text-brand-dim font-sans">
+              Waiting for live attack packets. Run <code class="text-cyan-400 font-mono bg-brand-card px-1 py-0.5 rounded">.\\fire_attack.bat</code> in PowerShell or click <strong>Fire Live Attack</strong> above.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      TELEMETRY_STREAM.filter(item => {
+        if (filter === 'ALL') return true;
+        if (filter === 'BLOCKED' && item.verdict.includes('BLOCKED')) return true;
+        if (filter === 'PERMITTED' && item.verdict.includes('ALLOWED')) return true;
+        return true;
+      }).forEach(ev => {
+        const isBlocked = ev.verdict.includes('BLOCKED');
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-brand-hover cursor-pointer transition-colors";
+        tr.onclick = () => openPacketModal(ev);
+        tr.innerHTML = `
+          <td class="py-2 pl-2 text-cyan-400 font-bold">${ev.time}</td>
+          <td class="py-2 font-bold ${isBlocked ? 'text-rose-400' : 'text-emerald-400'}">${ev.ip}</td>
+          <td class="py-2 text-slate-300">${ev.client}</td>
+          <td class="py-2 text-white font-bold">${ev.action}</td>
+          <td class="py-2 text-amber-400">${ev.layer}</td>
+          <td class="py-2 text-right pr-2">
+            <span class="inline-flex items-center space-x-1 text-[9px] font-bold px-1.5 py-0.5 rounded ${
+              isBlocked ? 'bg-rose-950 text-rose-400 border border-rose-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+            }">
+              ${ev.verdict}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    async function liveSync() {
+      try {
+        const r = await fetch('http://127.0.0.1:8765/api/live-threats');
+        if (r.ok) {
+          const d = await r.json();
+          if (d.events && d.events.length > 0) {
+            TELEMETRY_STREAM = d.events.map(ev => ({
+              time: ev.logged_at || (new Date().toLocaleTimeString() + " IST"),
+              ip: ev.source_ip,
+              client: ev.client_id,
+              action: ev.action,
+              layer: ev.security_layer,
+              verdict: ev.decision === 'BLOCKED' ? `HTTP ${ev.status_code || 403} BLOCKED` : `HTTP 200 ALLOWED`,
+              raw: `${ev.action} HTTP/1.1\r\nHost: 127.0.0.1:8765\r\nX-Forwarded-For: ${ev.source_ip}\r\nX-Client-ID: ${ev.client_id}`
+            }));
+            renderTelemetryFeed();
+
+            const totalBlocked = d.events.filter(e => e.decision === 'BLOCKED' || (e.status_code >= 400)).length;
+            const totalAllowed = d.events.filter(e => e.decision === 'PERMITTED' || e.status_code === 200).length;
+
+            document.getElementById('radarBlockedCount').textContent = totalBlocked;
+
+            const deltaBlocked = Math.max(0, totalBlocked - lastBlockedCount);
+            const deltaAllowed = Math.max(0, totalAllowed - lastAllowedCount);
+            lastBlockedCount = totalBlocked;
+            lastAllowedCount = totalAllowed;
+
+            if (deltaBlocked > 0) {
+              const latest = d.events[0];
+              document.getElementById('radarAlertBanner').className = "p-4 rounded-xl border border-rose-800 bg-rose-950/40 flex items-center justify-between transition-all";
+              document.getElementById('radarBannerTitle').textContent = `🚨 REAL-TIME THREAT BLOCKED: Source IP ${latest.source_ip} attempted ${latest.action}`;
+              document.getElementById('radarBannerTitle').className = "text-xs font-bold text-rose-300 font-mono";
+              document.getElementById('radarBannerSubtitle').textContent = `Enforcement Layer: ${latest.security_layer} | Zero-Trust Gateway Drop`;
+              document.getElementById('lastPacketLive').textContent = `Latest: ${latest.logged_at || 'Just now'}`;
+            }
+
+            if (chart) {
+              const nowLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+              chart.data.labels.shift();
+              chart.data.labels.push(nowLabel);
+              chart.data.datasets[0].data.shift();
+              chart.data.datasets[0].data.push(deltaBlocked);
+              chart.data.datasets[1].data.shift();
+              chart.data.datasets[1].data.push(deltaAllowed);
+              chart.update();
+            }
+          }
+        }
+      } catch (e) {
+        if (chart) {
+          const nowLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          chart.data.labels.shift();
+          chart.data.labels.push(nowLabel);
+          chart.data.datasets[0].data.shift();
+          chart.data.datasets[0].data.push(0);
+          chart.data.datasets[1].data.shift();
+          chart.data.datasets[1].data.push(0);
+          chart.update();
+        }
+      }
+    }
+    setInterval(liveSync, 1000);
+
+    // One-Click Attack Simulator Trigger
+    async function triggerAttackSimulationFromUI() {
+      const btn = document.getElementById('triggerBtn');
+      btn.innerHTML = `<i data-lucide="loader-2" class="h-3.5 w-3.5 animate-spin"></i><span>Firing...</span>`;
+      lucide.createIcons();
+
+      try {
+        await fetch('http://127.0.0.1:8765/v1/attendance/sync', {
+          headers: { 'X-Client-ID': 'rollcall-prod', 'X-Forwarded-For': '203.0.113.77', 'Authorization': 'Bearer demo-token' }
+        }).catch(() => {});
+        await fetch('http://127.0.0.1:8765/v1/learners/export', {
+          method: 'POST',
+          headers: { 'X-Client-ID': 'rollcall-prod', 'X-Forwarded-For': '10.10.4.12', 'Authorization': 'Bearer demo-token' }
+        }).catch(() => {});
+        await fetch('http://127.0.0.1:8765/v1/attendance/sync', {
+          headers: { 'X-Client-ID': 'rollcall-prod', 'X-Forwarded-For': '198.51.100.99', 'Authorization': 'Bearer demo-token' }
+        }).catch(() => {});
+        await fetch('http://127.0.0.1:8765/v1/attendance/sync', {
+          headers: { 'X-Client-ID': 'rollcall-prod', 'X-Forwarded-For': '10.10.4.12', 'Authorization': 'Bearer demo-token' }
+        }).catch(() => {});
+      } catch (err) {}
+
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="zap" class="h-3.5 w-3.5 fill-current"></i><span>Fire Live Attack</span>`;
+        lucide.createIcons();
+        liveSync();
+      }, 500);
+    }
+
+    // Deep Packet Modal
+    function openPacketModal(item) {
+      document.getElementById('modalHeaders').textContent = item.raw || `GET /v1/attendance/sync HTTP/1.1\nHost: 127.0.0.1:8765\nUser-Agent: Splunk-ES-Simulator\nX-Forwarded-For: ${item.ip}\nAuthorization: Bearer demo-rollcall-token\nX-Client-ID: ${item.client || 'rollcall-prod'}`;
+      document.getElementById('modalHex').textContent = `00000000  47 45 54 20 2f 76 31 2f  61 74 74 65 6e 64 61 6e  |GET /v1/attendan|\n00000010  63 65 2f 73 79 6e 63 20  48 54 54 50 2f 31 2e 31  |ce/sync HTTP/1.1|\n00000020  0d 0a 48 6f 73 74 3a 20  31 32 37 2e 30 2e 30 2e  |..Host: 127.0.0.|\n00000030  31 3a 38 37 36 35 0d 0a  58 2d 46 6f 72 77 61 72  |1:8765..X-Forwar|`;
+      toggleModal('packetModal');
+    }
+
+    // Evidence Vault
+    const EVIDENCE_DATA = [
+      { id: "E01", file: "E01_Authentication_Logs.csv", sha256: "43fe92c56b032a6a096c4295efc9842bfbb7aa7ef8e7345db59c1be3db301825" },
+      { id: "E02", file: "E02_ClassBridge_Audit_Logs.csv", sha256: "336e5495582fff0fe76007ec1b52a514d2417e4f16b2cfce19a16f272a2e584d" },
+      { id: "E03", file: "E03_API_Gateway_Logs.csv", sha256: "606aa5812fd0e4b859942d7b42023d85834927289f67a21f786d70df0ae43f87" },
+      { id: "E04", file: "E04_CampusVault_Audit_Logs.csv", sha256: "80e39b69f40a9dd9aa8bead92ca181cb538a74e54867df3c94285b739340ce97" },
+      { id: "E05", file: "E05_Integration_Register.csv", sha256: "93f4de01ec0fc2174fc8942b08ba9945cb57a552bfdb190d79b29cb1f57e5e11" },
+      { id: "E06", file: "E06_HelpDesk_Tickets.csv", sha256: "1a4c4858b212232c86e0c6ad9785fb823e207fe7fa2b67f10b06b6eb8b14a806" },
+      { id: "E07", file: "E07_Staff_and_Service_Account_Register.csv", sha256: "e44c3785442647a97753bfb8c0ba0ebcf6d8bf42817290d207ec18b84931a74d" },
+      { id: "E08", file: "E08_Information_Security_Policy_Extract.txt", sha256: "5f5e579555df798991276085a21faebf9ca2b737f10b7ba48c54c3e8e8940864" },
+      { id: "E09", file: "E09_Network_Observations.csv", sha256: "15c9a4c78f3d4c5fa3569805908f97fa602a832f05eb4234057e937d1a221f7d" },
+      { id: "E10", file: "E10_Vendor_And_Internal_Communications.json", sha256: "a0101abf8e7bd017aa2fb58f96e469aa7ea0c18090b8f4119958564e9a656822" },
+      { id: "E11", file: "E11_Additional_Configuration_Audit.csv", sha256: "93f70f9e240a86cc2d70838976eafe0447385a81ca69db234f9a0c28385db49e" },
+      { id: "E12", file: "E12_Incident_Response_Note.txt", sha256: "c49e016a1534725656910dae3b610c1157fe5a2110c733f114c81b2a926a793a" }
+    ];
+
+    function renderEvidence() {
+      const tbody = document.getElementById('evidenceTableBody');
+      tbody.innerHTML = '';
+      EVIDENCE_DATA.forEach(ev => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-brand-card";
+        tr.innerHTML = `
+          <td class="py-2 text-cyan-400 font-bold">${ev.id}</td>
+          <td class="py-2 text-white">${ev.file}</td>
+          <td class="py-2 text-brand-dim font-mono text-[11px]">${ev.sha256}</td>
+          <td class="py-2 text-right"><span class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 text-[10px] font-bold">VERIFIED</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function executeDefenseAction(act) {
+      if (act === 'SHUN_ATTACKER_IP') {
+        alert("SOAR Playbook Executed: IP 203.0.113.77 shunned across perimeter firewall.");
+        ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "Firewall Shun executed on IP 203.0.113.77" });
+        renderNotesThread();
+      } else if (act === 'REVOKE_ROLLCALL_TOKEN') {
+        alert("SOAR Playbook Executed: JTI rc-prod-01 revoked in 0ms.");
+        ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "Revoked JTI rc-prod-01 across IdP cluster" });
+        renderNotesThread();
+      } else if (act === 'LOCKDOWN_CAMPUSVAULT') {
+        alert("SOAR Playbook Executed: CampusVault bucket locked to read-only DLP mode.");
+        ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "CampusVault S3 bucket quarantined in DLP mode" });
+        renderNotesThread();
+      }
+      toggleModal('soarModal');
+    }
+
+    let simMode = 'hardened';
+    function setSimMode(m) {
+      simMode = m;
+      if (m === 'vulnerable') {
+        document.getElementById('simModeVuln').className = "px-3 py-1 text-xs font-bold rounded bg-rose-600 text-white shadow-sm";
+        document.getElementById('simModeHard').className = "px-3 py-1 text-xs text-brand-dim hover:text-white rounded";
+      } else {
+        document.getElementById('simModeHard').className = "px-3 py-1 text-xs font-bold rounded bg-emerald-600 text-white shadow-sm";
+        document.getElementById('simModeVuln').className = "px-3 py-1 text-xs text-brand-dim hover:text-white rounded";
+      }
+    }
+
+    function transmitCraftedPacket() {
+      const ep = document.getElementById('craftEndpoint').value;
+      const ip = document.getElementById('craftIp').value;
+      const box = document.getElementById('dissectBox');
+      const verd = document.getElementById('dissectVerdict');
+      const det = document.getElementById('dissectDetails');
+
+      if (simMode === 'vulnerable') {
+        box.className = "p-4 rounded-lg bg-rose-950/40 border border-rose-600 text-rose-300";
+        verd.textContent = "HTTP 200 OK — VULNERABILITY EXPOSED (DATA LEAKED)";
+        det.textContent = `Vulnerable baseline allowed ${ip} to access ${ep} without checking source subnet or scope.`;
+      } else {
+        if (ip === "203.0.113.77") {
+          box.className = "p-4 rounded-lg bg-emerald-950/40 border border-emerald-600 text-emerald-300";
+          verd.textContent = "HTTP 403 FORBIDDEN — BLOCKED BY PERIMETER_IP_FILTER";
+          det.textContent = `External IP ${ip} rejected at Layer 1. Client rollcall-prod is pinned strictly to subnet 10.10.4.0/24.`;
+        } else {
+          box.className = "p-4 rounded-lg bg-emerald-950/40 border border-emerald-600 text-emerald-300";
+          verd.textContent = "HTTP 200 OK — OPERATION LEGITIMATELY AUTHORIZED";
+          det.textContent = `Request passed all Zero-Trust checks.`;
+        }
+      }
+    }
+
+    function runSplQuery() {
+      alert("SPL Query executed across index=northstar. 2 matching events found.");
+    }
+
+    // Launch Routine
+    renderFindingsRail();
+    selectFinding("DET-001");
+    renderNotesThread();
+    renderFullRulesTab();
+    renderEvidence();
+    renderTelemetryFeed();
+    setTimeout(initChart, 100);
+  </script>
+</body>
+</html>

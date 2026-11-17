@@ -1,0 +1,8 @@
+audit_id,timestamp,action,actor_identity,source_ip,resource,records_impacted,status
+P001,2026-10-12T02:01:10+05:30,attendance.sync,svc_rollcall,10.10.4.12,/api/v1/attendance,120,SUCCESS
+P002,2026-10-12T02:01:15+05:30,attendance.read,svc_rollcall,10.10.4.12,/api/v1/attendance,120,SUCCESS
+P003,2026-10-12T03:16:41+05:30,learner.search,svc_rollcall,203.0.113.77,/api/v1/learners/search,2300,SUCCESS
+P004,2026-10-12T03:17:10+05:30,learner.export,svc_rollcall,203.0.113.77,/api/v1/learners/export,2300,SUCCESS
+P005,2026-10-12T03:18:50+05:30,course.read,svc_rollcall,203.0.113.77,/api/v1/courses,42,SUCCESS
+P006,2026-10-12T03:19:22+05:30,attendance.read,svc_rollcall,203.0.113.77,/api/v1/attendance/all,2300,SUCCESS
+P007,2026-10-12T09:15:00+05:30,learner.view,ananya.r,198.51.100.21,/ui/learners/1044,1,SUCCESS

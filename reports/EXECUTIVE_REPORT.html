@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Forensic Investigation Report | Case NS-26-014</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    @media print {
+      body { background-color: #ffffff; color: #000000; }
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body class="p-6 sm:p-12 max-w-5xl mx-auto">
+
+  <!-- Print Button Bar -->
+  <div class="no-print flex justify-between items-center mb-8 pb-4 border-b border-slate-200">
+    <div class="flex items-center space-x-2">
+      <span class="px-2.5 py-1 rounded bg-slate-900 text-white font-mono text-xs font-bold">CASE NS-26-014</span>
+      <span class="text-xs text-slate-500 font-mono">OFFICIAL DFIR REPORT</span>
+    </div>
+    <button onclick="window.print()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-all shadow-sm flex items-center space-x-1.5">
+      <span>Print / Save as PDF (Ctrl + P)</span>
+    </button>
+  </div>
+
+  <!-- Header -->
+  <header class="border-b-2 border-slate-900 pb-6 mb-8">
+    <div class="flex justify-between items-start">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-widest text-indigo-600">CRIMEATHON '26 — DEFENSE TRACK MASTER SUBMISSION</span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">Digital Forensic Investigation & Threat Assessment Report</h1>
+        <p class="text-sm text-slate-600 mt-1 font-mono">Case File: NS-26-014 — The Northstar Learning Services Investigation</p>
+      </div>
+      <div class="text-right font-mono text-xs text-slate-500">
+        <div>Classification: <strong>STRICTLY CONFIDENTIAL</strong></div>
+        <div>Date: <strong>12 October 2026</strong></div>
+        <div>Target: <strong>Northstar Skills Academy (Chennai)</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. Executive Summary -->
+  <section class="mb-8">
+    <h2 class="text-lg font-bold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-200 pb-1 mb-3">1. Executive Summary</h2>
+    <p class="text-sm leading-relaxed text-slate-700 mb-3">
+      On 12 October 2026, Northstar Skills Academy observed degraded attendance synchronization, severe portal response latency surging from 45 ms to 8,420 ms (~187× spike), and an unexpected 486,200-byte learner export dataset staged within CampusVault S3 storage.
+    </p>
+    <p class="text-sm leading-relaxed text-slate-700 mb-3">
+      The <strong>Northstar Sentinel</strong> defensive platform ingested 12 evidentiary artifacts (E01–E12), verified bit-level SHA-256 integrity, normalized 40 events into OCSF schema, and established that vendor service credential <strong><code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">rollcall-prod</code> (<code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs">svc_rollcall</code>)</strong> was utilized from an unauthorized external public IP (<strong><code class="bg-slate-100 px-1 py-0.5 rounded font-mono text-xs text-rose-600">203.0.113.77</code></strong>) to search, export, and exfiltrate <strong>2,300 learner PII records</strong>.
+    </p>
+    <div class="bg-slate-100 border-l-4 border-indigo-600 p-4 rounded-r-lg font-mono text-xs space-y-1 text-slate-800">
+      <div><strong>ROOT CAUSES:</strong></div>
+      <div>1. Scope Creep: Integration granted bulk export rights outside documented attendance scope (E05:INT-01).</div>
+      <div>2. Credential Hygiene: Token rc-prod-01 had Expiry: Never with no scheduled rotation (E08:Sec 4.1).</div>
+      <div>3. Ingress Absence: Gateway lacked CIDR subnet pinning (IP Restriction: None).</div>
+    </div>
+  </section>
+
+  <!-- 2. Evidence Hashes -->
+  <section class="mb-8">
+    <h2 class="text-lg font-bold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-200 pb-1 mb-3">2. Cryptographic Evidence Inventory (SHA-256)</h2>
+    <table class="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
+      <thead class="bg-slate-100 font-mono text-slate-700">
+        <tr>
+          <th class="p-2 border-b border-slate-200">ID</th>
+          <th class="p-2 border-b border-slate-200">Artifact File</th>
+          <th class="p-2 border-b border-slate-200">SHA-256 Digest</th>
+          <th class="p-2 border-b border-slate-200 text-right">Integrity Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200 font-mono text-[11px]">
+        <tr><td class="p-2 font-bold text-indigo-600">E01</td><td class="p-2">E01_Authentication_Logs.csv</td><td class="p-2 text-slate-500">43fe92c56b032a6a096c4295efc9842bfbb7aa7ef8e7345db59c1be3db301825</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E02</td><td class="p-2">E02_ClassBridge_Audit_Logs.csv</td><td class="p-2 text-slate-500">336e5495582fff0fe76007ec1b52a514d2417e4f16b2cfce19a16f272a2e584d</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E03</td><td class="p-2">E03_API_Gateway_Logs.csv</td><td class="p-2 text-slate-500">606aa5812fd0e4b859942d7b42023d85834927289f67a21f786d70df0ae43f87</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E04</td><td class="p-2">E04_CampusVault_Audit_Logs.csv</td><td class="p-2 text-slate-500">80e39b69f40a9dd9aa8bead92ca181cb538a74e54867df3c94285b739340ce97</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E05</td><td class="p-2">E05_Integration_Register.csv</td><td class="p-2 text-slate-500">93f4de01ec0fc2174fc8942b08ba9945cb57a552bfdb190d79b29cb1f57e5e11</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E06</td><td class="p-2">E06_HelpDesk_Tickets.csv</td><td class="p-2 text-slate-500">1a4c4858b212232c86e0c6ad9785fb823e207fe7fa2b67f10b06b6eb8b14a806</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E07</td><td class="p-2">E07_Staff_and_Service_Account_Register.csv</td><td class="p-2 text-slate-500">e44c3785442647a97753bfb8c0ba0ebcf6d8bf42817290d207ec18b84931a74d</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E08</td><td class="p-2">E08_Information_Security_Policy_Extract.txt</td><td class="p-2 text-slate-500">5f5e579555df798991276085a21faebf9ca2b737f10b7ba48c54c3e8e8940864</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E09</td><td class="p-2">E09_Network_Observations.csv</td><td class="p-2 text-slate-500">15c9a4c78f3d4c5fa3569805908f97fa602a832f05eb4234057e937d1a221f7d</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E10</td><td class="p-2">E10_Vendor_And_Internal_Communications.json</td><td class="p-2 text-slate-500">a0101abf8e7bd017aa2fb58f96e469aa7ea0c18090b8f4119958564e9a656822</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E11</td><td class="p-2">E11_Additional_Configuration_Audit.csv</td><td class="p-2 text-slate-500">93f70f9e240a86cc2d70838976eafe0447385a81ca69db234f9a0c28385db49e</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+        <tr><td class="p-2 font-bold text-indigo-600">E12</td><td class="p-2">E12_Incident_Response_Note.txt</td><td class="p-2 text-slate-500">c49e016a1534725656910dae3b610c1157fe5a2110c733f114c81b2a926a793a</td><td class="p-2 text-right text-emerald-600 font-bold">VERIFIED</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. Epistemic Separation -->
+  <section class="mb-8">
+    <h2 class="text-lg font-bold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-200 pb-1 mb-3">3. Epistemic Truth Matrix (ISO/IEC 27037 Standards)</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+      <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-lg">
+        <h3 class="font-bold font-mono text-emerald-800 uppercase mb-2">Confirmed Facts (Log Proof)</h3>
+        <ul class="space-y-1 text-slate-700 list-disc pl-4">
+          <li>IP 203.0.113.77 ingress at 03:15:55 IST (E09:N001).</li>
+          <li>svc_rollcall authenticated from 203.0.113.77 (E01:A011).</li>
+          <li>Config read CHG-882 executed at 03:16:35 IST (E11).</li>
+          <li>2,300 learner records searched and exported (E03).</li>
+          <li>Staged file downloaded twice: 972.4 KB total (E04).</li>
+          <li>Ajay logged in post-termination on Oct 9 (E01:A006).</li>
+        </ul>
+      </div>
+
+      <div class="p-3 bg-blue-50 border border-blue-300 rounded-lg">
+        <h3 class="font-bold font-mono text-blue-800 uppercase mb-2">Supported Inferences</h3>
+        <ul class="space-y-1 text-slate-700 list-disc pl-4">
+          <li>Token replayed by external actor; legitimate node operated at 02:01 IST.</li>
+          <li>Token disclosed in support ticket HD-1058 screenshot or via CHG-882.</li>
+          <li>Latency spike (8,420ms) caused by unindexed 2,300-row database query.</li>
+          <li>Attendance delay caused by API thread contention.</li>
+        </ul>
+      </div>
+
+      <div class="p-3 bg-amber-50 border border-amber-300 rounded-lg">
+        <h3 class="font-bold font-mono text-amber-800 uppercase mb-2">Epistemic Unknowns</h3>
+        <ul class="space-y-1 text-slate-700 list-disc pl-4">
+          <li>Physical identity and real-world location of human operator.</li>
+          <li>Whether two downloads represent two copies or one resumed TCP stream.</li>
+          <li>Whether learner dataset was distributed onward or destroyed.</li>
+          <li>No proof links former employee Ajay to the RollCall breach.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Timeline -->
+  <section class="mb-8">
+    <h2 class="text-lg font-bold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-200 pb-1 mb-3">4. Incident Timeline (12-Oct-2026 IST)</h2>
+    <div class="space-y-1.5 font-mono text-xs">
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:15:55 IST</strong> • Ingress TCP 443 from external IP 203.0.113.77</span><span class="text-rose-600 font-bold">E09:N001</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:16:32 IST</strong> • svc_rollcall authenticated without MFA</span><span class="text-amber-600 font-bold">E01:A011</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:16:35 IST</strong> • Integration settings read (credential_config_read)</span><span class="text-rose-600 font-bold">E11:CHG-882</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:16:40 IST</strong> • GET /v1/learners/search (2,300 records dumped)</span><span class="text-rose-600 font-bold">E03:R003</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:17:09 IST</strong> • POST /v1/learners/export (8,420ms latency spike)</span><span class="text-rose-600 font-bold">E03:R004</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:17:35 IST</strong> • learners-20261012.csv staged in CampusVault (486.2 KB)</span><span class="text-rose-600 font-bold">E04:C001</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:21:03 IST</strong> • Download 1 of staged export (486.2 KB)</span><span class="text-rose-600 font-bold">E04:C003</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:24:48 IST</strong> • Download 2 of staged export (486.2 KB, 972.4 KB total)</span><span class="text-rose-600 font-bold">E04:C004</span></div>
+      <div class="p-2 bg-slate-100 rounded flex justify-between"><span><strong>03:25:00 IST</strong> • Regular vendor node (10.10.4.12) resumes heartbeat</span><span class="text-emerald-600 font-bold">E09:N002</span></div>
+    </div>
+  </section>
+
+  <!-- 5. Zero-Trust Architecture -->
+  <section class="mb-8">
+    <h2 class="text-lg font-bold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-200 pb-1 mb-3">5. Zero-Trust Policy Enforcement Point (PEP) Controls</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+      <div class="p-3 bg-slate-100 border border-slate-300 rounded-lg">
+        <strong class="text-indigo-600 block mb-1">Layer 1: CIDR Subnet Pinning</strong>
+        Pins rollcall-prod strictly to 10.10.4.0/24. Rejects external IP 203.0.113.77 with HTTP 403 Forbidden.
+      </div>
+      <div class="p-3 bg-slate-100 border border-slate-300 rounded-lg">
+        <strong class="text-indigo-600 block mb-1">Layer 2: Least-Privilege Scope Gate</strong>
+        Restricts RollCall strictly to attendance:sync. Rejects learner:export and learner:search with HTTP 403.
+      </div>
+      <div class="p-3 bg-slate-100 border border-slate-300 rounded-lg">
+        <strong class="text-indigo-600 block mb-1">Layer 3: Leaky-Bucket Rate Limiter</strong>
+        Clamps requests to 10 req/min. Eliminates database thread starvation and portal latency spikes.
+      </div>
+      <div class="p-3 bg-slate-100 border border-slate-300 rounded-lg">
+        <strong class="text-indigo-600 block mb-1">Layer 4: Two-Man Rule Export Gate</strong>
+        Requires cryptographic X-DPO-Approval-Token before staging learner dumps into CampusVault.
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Regulatory & Sign-off -->
+  <section class="border-t-2 border-slate-900 pt-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs font-mono">
+      <div>
+        <h4 class="font-bold text-slate-900 uppercase mb-1">Statutory Impact:</h4>
+        <p class="text-slate-600 leading-relaxed">
+          • DPDPA 2023 Sec 8(5): 2,300 affected learner principals; maximum statutory exposure up to ₹250 Crores.<br>
+          • CERT-In Mandate: Formal breach notice within 6 hours.
+        </p>
+      </div>
+      <div class="text-right">
+        <div class="font-bold text-slate-900">LEAD FORENSIC EXAMINER</div>
+        <div class="text-slate-600 mt-1">Northstar Sentinel Incident Command</div>
+        <div class="text-[10px] text-slate-400 mt-2">Bit-Level Attestation • ISO/IEC 27037 Standard</div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

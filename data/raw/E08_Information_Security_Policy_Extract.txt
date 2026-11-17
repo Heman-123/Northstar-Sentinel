@@ -1,0 +1,20 @@
+=============================================================================
+NORTHSTAR SKILLS ACADEMY PVT. LTD. - INFORMATION SECURITY POLICY (EXTRACT)
+Doc Ref: POL-SEC-2025-V2.1 | Effective Date: 01-Jan-2025
+=============================================================================
+
+Section 4.1: Cryptographic Secrets & Credential Management
+- All production API keys, tokens, and database passwords must be stored in an authorized Secrets Vault.
+- Under NO circumstances may credentials or secrets be transmitted via email, chat, support tickets, or screenshots.
+- Production service credentials must enforce an automatic rotation lifecycle (maximum TTL: 90 days) or possess a documented rotation schedule.
+
+Section 4.2: Third-Party & Vendor Integrations
+- All integrations must adhere strictly to the Principle of Least Privilege (PoLP). Granted API permissions must match the explicit documented business purpose.
+- Where supported by the protocol, vendor integrations must enforce network source restrictions (IP whitelisting or CIDR pinning).
+
+Section 5.3: Bulk Learner Data Exports
+- Bulk exports of learner Personally Identifiable Information (PII) require prior documented business justification and approval from Department Head or Data Protection Officer.
+- Automated bulk export jobs must be logged and monitored for unauthorized distribution.
+
+Section 8.2: Account Deprovisioning & Offboarding
+- Access privileges of terminated or resigned employees must be revoked and their accounts disabled in the Identity Provider on or before their final working day.

@@ -1,0 +1,86 @@
+[
+  {
+    "action": "GET /v1/attendance/sync",
+    "client_id": "rollcall-prod",
+    "source_ip": "10.10.4.12",
+    "decision": "PERMITTED",
+    "status_code": 200,
+    "threat_type": "LEGITIMATE_OR_UNCHECKED",
+    "security_layer": "ALLOW_GATE",
+    "reason": "Request allowed",
+    "logged_at": "14:00:45 IST",
+    "epoch": 1794904245.3503325
+  },
+  {
+    "action": "GET /v1/attendance/sync",
+    "client_id": "rollcall-prod",
+    "source_ip": "198.51.100.99",
+    "decision": "BLOCKED",
+    "status_code": 403,
+    "threat_type": "ADAPTIVE_THREAT_AUTO_SHUNNING",
+    "security_layer": "ADAPTIVE_THREAT_AUTO_SHUNNING",
+    "reason": "DYNAMICALLY_QUARANTINED: IP 198.51.100.99 is AUTO-BANNED due to suspicious activity (3599s remaining)",
+    "logged_at": "14:00:44 IST",
+    "epoch": 1794904244.836216
+  },
+  {
+    "action": "GET /v1/attendance/sync",
+    "client_id": "rollcall-prod",
+    "source_ip": "198.51.100.99",
+    "decision": "BLOCKED",
+    "status_code": 403,
+    "threat_type": "PERIMETER_IP_FILTER",
+    "security_layer": "PERIMETER_IP_FILTER",
+    "reason": "UNAUTHORIZED_SOURCE_IP: 198.51.100.99 not permitted for client rollcall-prod",
+    "logged_at": "14:00:44 IST",
+    "epoch": 1794904244.3263032
+  },
+  {
+    "action": "GET /v1/attendance/sync",
+    "client_id": "rollcall-prod",
+    "source_ip": "198.51.100.99",
+    "decision": "BLOCKED",
+    "status_code": 403,
+    "threat_type": "PERIMETER_IP_FILTER",
+    "security_layer": "PERIMETER_IP_FILTER",
+    "reason": "UNAUTHORIZED_SOURCE_IP: 198.51.100.99 not permitted for client rollcall-prod",
+    "logged_at": "14:00:43 IST",
+    "epoch": 1794904243.815301
+  },
+  {
+    "action": "POST /v1/learners/export",
+    "client_id": "rollcall-prod",
+    "source_ip": "10.10.4.12",
+    "decision": "BLOCKED",
+    "status_code": 403,
+    "threat_type": "LEAST_PRIVILEGE_SCOPE_GATE",
+    "security_layer": "LEAST_PRIVILEGE_SCOPE_GATE",
+    "reason": "PRIVILEGE_CREEP_BLOCKED: Client 'rollcall-prod' lacks required scope 'learner:export'",
+    "logged_at": "14:00:42 IST",
+    "epoch": 1794904242.8004768
+  },
+  {
+    "action": "GET /v1/attendance/sync",
+    "client_id": "rollcall-prod",
+    "source_ip": "203.0.113.77",
+    "decision": "BLOCKED",
+    "status_code": 403,
+    "threat_type": "PERIMETER_IP_FILTER",
+    "security_layer": "PERIMETER_IP_FILTER",
+    "reason": "UNAUTHORIZED_SOURCE_IP: 203.0.113.77 not permitted for client rollcall-prod",
+    "logged_at": "14:00:41 IST",
+    "epoch": 1794904241.74881
+  },
+  {
+    "action": "GET /favicon.ico",
+    "client_id": "anonymous",
+    "source_ip": "127.0.0.1",
+    "decision": "BLOCKED",
+    "status_code": 401,
+    "threat_type": "UNAUTHENTICATED_ACCESS_ATTEMPT",
+    "security_layer": "AUTHENTICATION_GATE",
+    "reason": "Missing or invalid Bearer token",
+    "logged_at": "13:51:54 IST",
+    "epoch": 1794903714.2787056
+  }
+]

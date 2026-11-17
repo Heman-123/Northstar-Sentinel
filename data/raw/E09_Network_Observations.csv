@@ -1,0 +1,4 @@
+obs_id,timestamp,source_ip,destination_ip,protocol,port,bytes_transferred,flags,notes
+N001,2026-10-12T03:15:55+05:30,203.0.113.77,10.10.1.100,TCP,443,15200,SYN/ACK,Unrecognized external IP connecting to Gateway
+N002,2026-10-12T03:25:00+05:30,10.10.4.12,10.10.1.100,TCP,443,4500,SYN/ACK,Normal connector node heartbeat resumed
+N003,2026-10-12T08:15:00+05:30,198.51.100.21,10.10.1.100,TCP,443,89000,ESTABLISHED,Staff VPN traffic

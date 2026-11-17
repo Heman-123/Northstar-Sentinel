@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRIMEATHON '26 Final Presentation Slide Deck | Northstar Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    .slide-card {
+      aspect-ratio: 16 / 9;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #111726 0%, #0d121f 100%);
+      border: 1px solid #1f293d;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+    @media print {
+      body { background: #ffffff; color: #000000; padding: 0; }
+      .no-print { display: none; }
+      .slide-card {
+        aspect-ratio: auto;
+        border: none;
+        box-shadow: none;
+        page-break-after: always;
+        background: #ffffff;
+        color: #000000;
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-8">
+
+  <!-- Top Toolbar -->
+  <div class="no-print max-w-[1100px] w-full mx-auto flex justify-between items-center mb-4">
+    <div class="flex items-center space-x-3">
+      <span class="px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-800 text-xs font-mono font-bold">
+        CRIMEATHON '26 PPT DECK
+      </span>
+      <span class="text-xs text-slate-400 font-mono">Deliverable 2: Final 8-Slide Master Deck</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button onclick="prevSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-all">← Prev</button>
+      <span id="slideIndicator" class="text-xs font-mono px-2 text-cyan-400 font-bold">Slide 1 of 8</span>
+      <button onclick="nextSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-all">Next →</button>
+      <button onclick="window.print()" class="ml-2 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm">
+        Save as PDF / Print
+      </button>
+    </div>
+  </div>
+
+  <!-- SLIDES CONTAINER -->
+  <div class="flex-1 flex items-center justify-center">
+
+    <!-- SLIDE 1: Title -->
+    <div id="slide-1" class="slide-card w-full rounded-2xl p-8 sm:p-14 flex flex-col justify-between relative overflow-hidden">
+      <div class="flex justify-between items-center">
+        <span class="px-3 py-1 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800 text-xs font-mono font-bold">DEFENSE TRACK SUBMISSION</span>
+        <span class="text-xs font-mono text-slate-400">CASE FILE: NS-26-014</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <div class="inline-flex items-center space-x-2 text-indigo-400 font-mono text-sm uppercase tracking-widest font-bold">
+          <span>Project Identifier</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          NORTHSTAR <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500">SENTINEL</span>
+        </h1>
+        <p class="text-base sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
+          Evidence-Driven Zero-Trust Security Monitoring, Automated DFIR Correlation & Incident Response Platform
+        </p>
+      </div>
+      <div class="pt-6 border-t border-slate-800/80 flex justify-between items-end text-xs font-mono text-slate-400">
+        <div>
+          <div>Target: <strong>Northstar Skills Academy Pvt. Ltd. (Chennai)</strong></div>
+          <div class="text-cyan-400 mt-0.5">github.com/Heman-123/Northstar-Sentinel</div>
+        </div>
+        <div class="text-right">
+          <div>Team: <strong>Northstar Defense Taskforce</strong></div>
+          <div class="text-slate-500">Tier-1 Hackathon Finalist Deck</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Identification -->
+    <div id="slide-2" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-rose-400 font-mono">[02]</span>
+          <span>Problem Identification & Attack Landscape</span>
+        </h2>
+        <span class="text-xs font-mono text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-900">INCIDENT DISCOVERY</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+          <span class="text-amber-400 font-bold font-mono text-sm block">Observed Anomaly Cascade (12-Oct-2026):</span>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
+            <li><strong>Attendance Delay:</strong> Third-party connector experienced unexpected synchronization delays.</li>
+            <li><strong>Portal Latency Surge:</strong> Student query latencies jumped from normal 45ms to <strong>8,420 ms (~187× spike)</strong>.</li>
+            <li><strong>Data Staging in Cloud:</strong> Discovery of unscheduled 486.2 KB export file (<code class="text-cyan-400 font-mono">learners-20261012.csv</code>) in CampusVault S3 storage.</li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+          <span class="text-rose-400 font-bold font-mono text-sm block">Root Vulnerability Chain (The "Why"):</span>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
+            <li><strong>Privilege Creep (OWASP API1 / CWE-250):</strong> Client <code class="text-purple-300 font-mono">rollcall-prod</code> granted global <code class="text-cyan-400 font-mono">learner.export</code> rights despite attendance-only scope.</li>
+            <li><strong>Credential Hygiene Failure (OWASP API2 / CWE-798):</strong> Token issued with <code class="text-rose-400 font-mono">Expiry: Never</code> and <code class="text-rose-400 font-mono">IP Restriction: None</code>.</li>
+            <li><strong>Rate Limiting Absence (OWASP API4 / CWE-770):</strong> No rate limiting, enabling unthrottled table scans of 2,300 learner records.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Impact: 2,300 Learner PII Records Compromised</span>
+        <span>Statutory Exposure: DPDPA 2023 Penalty up to ₹250 Crores</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Epistemic Matrix -->
+    <div id="slide-3" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-amber-400 font-mono">[03]</span>
+          <span>Forensic Evidence Correlation & Epistemic Matrix</span>
+        </h2>
+        <span class="text-xs font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-900">ISO/IEC 27037 RIGOR</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-auto text-xs">
+        <div class="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/40 space-y-1.5">
+          <span class="font-mono font-bold text-emerald-400 block uppercase">1. Confirmed Facts (Log-Proven)</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">
+            • External IP 203.0.113.77 ingress at 03:15:55 IST [E09].<br>
+            • svc_rollcall auth via key [E01:A011].<br>
+            • Config read CHG-882 executed at 03:16:35 IST [E11].<br>
+            • 2,300 records queried & exported [E03].<br>
+            • Downloaded twice: 972.4 KB total [E04].
+          </p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/40 space-y-1.5">
+          <span class="font-mono font-bold text-cyan-400 block uppercase">2. Supported Inferences</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">
+            • Token replayed from external IP; legitimate vendor node operated at 02:01 IST.<br>
+            • Key leaked via ticket HD-1058 screenshot or API read CHG-882.<br>
+            • Latency spike caused by mass unindexed database scan.
+          </p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/40 space-y-1.5">
+          <span class="font-mono font-bold text-amber-400 block uppercase">3. Epistemic Unknowns</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">
+            • Physical identity of human operator.<br>
+            • Two downloads = 2 copies or 1 resumed TCP stream.<br>
+            • Onward distribution or sale of data.<br>
+            • <strong>No proof links Ajay's login on Oct 9 to RollCall breach on Oct 12.</strong>
+          </p>
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Scientific separation of facts prevents false attribution in legal forensics</span>
+        <span>Chain-of-Custody: 12/12 SHA-256 Hashes Verified</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Proposed Solution -->
+    <div id="slide-4" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-cyan-400 font-mono">[04]</span>
+          <span>Proposed Solution: Northstar Sentinel Dual Engine</span>
+        </h2>
+        <span class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">ARCHITECTURE</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+          <span class="text-cyan-400 font-bold font-mono text-sm flex items-center space-x-2">
+            <span>PILLAR 1: Evidence-Driven DFIR Engine</span>
+          </span>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
+            <li><strong>Automated Ingestion:</strong> Calculates bit-level SHA-256 digests preserving evidence custody.</li>
+            <li><strong>OCSF Event Normalization:</strong> Unifies 6 disparate schemas into structured event objects.</li>
+            <li><strong>Graph Correlation Engine:</strong> Evaluates 9 cross-source rules across identity, APIs, and cloud storage.</li>
+            <li><strong>10 Behavioral Rules:</strong> DET-001 to DET-010 with decoupled Severity vs. Confidence triage index.</li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+          <span class="text-purple-400 font-bold font-mono text-sm flex items-center space-x-2">
+            <span>PILLAR 2: Zero-Trust Policy Enforcement (PEP)</span>
+          </span>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
+            <li><strong>CIDR Subnet Pinning:</strong> Restricts RollCall strictly to 10.10.4.0/24; drops 203.0.113.77.</li>
+            <li><strong>Least-Privilege Scoping:</strong> Locks RollCall strictly to attendance:sync (blocks mass export).</li>
+            <li><strong>Token-Bucket Rate Limiter:</strong> Limits requests to 10 req/min, eliminating database latency surges.</li>
+            <li><strong>Two-Man Rule Export Gate:</strong> Mandates cryptographic X-DPO-Approval token before staging files.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Full Offline Local Execution: 127.0.0.1:8765</span>
+        <span>Inspection Latency: 0.8 ms per transaction</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Workflow Pipeline -->
+    <div id="slide-5" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-indigo-400 font-mono">[05]</span>
+          <span>Defensive Workflow & PEP Enforcement Pipeline</span>
+        </h2>
+        <span class="text-xs font-mono text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-900">SYSTEM FLOW</span>
+      </div>
+      <div class="p-4 rounded-xl bg-[#080d1a] border border-slate-800 font-mono text-xs my-auto text-slate-300 space-y-3">
+        <div class="text-center font-bold text-cyan-400">[INBOUND CLIENT REQUEST: GET / POST]</div>
+        <div class="text-center text-slate-500">│</div>
+        <div class="grid grid-cols-5 gap-2 text-center text-[10px]">
+          <div class="p-2 rounded bg-slate-900 border border-slate-700">
+            <strong class="text-rose-400 block">LAYER 0</strong>
+            Auto-Shun Quarantine
+          </div>
+          <div class="p-2 rounded bg-slate-900 border border-slate-700">
+            <strong class="text-cyan-400 block">LAYER 1</strong>
+            CIDR Subnet Pinning
+          </div>
+          <div class="p-2 rounded bg-slate-900 border border-slate-700">
+            <strong class="text-purple-400 block">LAYER 2</strong>
+            OAuth2 Scope Gate
+          </div>
+          <div class="p-2 rounded bg-slate-900 border border-slate-700">
+            <strong class="text-amber-400 block">LAYER 3</strong>
+            Rate Limiter (10/min)
+          </div>
+          <div class="p-2 rounded bg-slate-900 border border-slate-700">
+            <strong class="text-emerald-400 block">LAYER 4</strong>
+            DPO Two-Man Approval
+          </div>
+        </div>
+        <div class="text-center text-slate-500">│ (If All 5 Layers Pass)</div>
+        <div class="text-center font-bold text-emerald-400">[HTTP 200 OK — SANITIZED OPERATION PERMITTED]</div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Zero-Standing Privileges</span>
+        <span>0ms Ephemeral JTI Revocation</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Technologies Used -->
+    <div id="slide-6" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-purple-400 font-mono">[06]</span>
+          <span>Technologies, Frameworks & Standards</span>
+        </h2>
+        <span class="text-xs font-mono text-purple-400 bg-purple-950 px-2 py-0.5 rounded border border-purple-900">TECH STACK</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-auto text-xs font-mono">
+        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+          <strong class="text-cyan-400 block">Languages & Backend</strong>
+          <p class="text-slate-300 text-[11px]">Python 3.12, hashlib, ipaddress, socketserver, http.server, unittest.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+          <strong class="text-purple-400 block">Web Architecture</strong>
+          <p class="text-slate-300 text-[11px]">Tailwind CSS, Lucide Icons, Chart.js, HTML5 Canvas, SVG Topologies.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+          <strong class="text-rose-400 block">Threat Frameworks</strong>
+          <p class="text-slate-300 text-[11px]">MITRE ATT&CK (T1078, T1552, T1530, T1567), OWASP API Top 10 (2023).</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+          <strong class="text-emerald-400 block">Compliance Standards</strong>
+          <p class="text-slate-300 text-[11px]">DPDPA 2023 Sec 8(5), CERT-In 6-Hr Mandate, ISO/IEC 27037.</p>
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Zero Third-Party Cloud Dependencies (Safe Local Execution)</span>
+        <span>100% Offline Demonstrable</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Experimental Results -->
+    <div id="slide-7" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-emerald-400 font-mono">[07]</span>
+          <span>Experimental Verification & Attack Simulation Results</span>
+        </h2>
+        <span class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">VERIFICATION</span>
+      </div>
+      <div class="my-auto space-y-3 text-xs">
+        <table class="w-full text-left border border-slate-800 rounded-lg overflow-hidden font-mono">
+          <thead class="bg-slate-900 text-slate-400 text-[11px]">
+            <tr>
+              <th class="p-2.5">Attack Vector (Case NS-26-014)</th>
+              <th class="p-2.5">Vulnerable Baseline (Before)</th>
+              <th class="p-2.5">Sentinel Hardened PEP (After)</th>
+              <th class="p-2.5 text-right">Verdict</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-[11px]">
+            <tr>
+              <td class="p-2.5 text-white font-bold">1. External IP Replay (203.0.113.77)</td>
+              <td class="p-2.5 text-rose-400">HTTP 200 OK (Data Leaked)</td>
+              <td class="p-2.5 text-emerald-400">HTTP 403 (PERIMETER_IP_FILTER)</td>
+              <td class="p-2.5 text-right text-emerald-400 font-bold">BLOCKED</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 text-white font-bold">2. Privilege Creep (Learner Export)</td>
+              <td class="p-2.5 text-rose-400">HTTP 200 OK (Mass Staged)</td>
+              <td class="p-2.5 text-emerald-400">HTTP 403 (SCOPE_INSUFFICIENT)</td>
+              <td class="p-2.5 text-right text-emerald-400 font-bold">BLOCKED</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 text-white font-bold">3. Repeat Probe Attacker (198.51.100.99)</td>
+              <td class="p-2.5 text-rose-400">HTTP 200 OK (Unrestricted)</td>
+              <td class="p-2.5 text-emerald-400">HTTP 403 (DYNAMIC_AUTO_SHUN)</td>
+              <td class="p-2.5 text-right text-emerald-400 font-bold">AUTO-BANNED</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 text-white font-bold">4. Benchmark (Legitimate Sync 10.10.4.12)</td>
+              <td class="p-2.5 text-slate-400">HTTP 200 OK</td>
+              <td class="p-2.5 text-emerald-400">HTTP 200 OK (Latency: 0.8ms)</td>
+              <td class="p-2.5 text-right text-emerald-400 font-bold">ALLOWED</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-2 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-mono text-center font-bold">
+          [+] 15 / 15 Modular Unit Tests Passed 100% across Ingestion, Normalization, Correlation & PEP Proxy
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Automated Verification via run_unit_tests.bat</span>
+        <span>Zero False Negatives in Live Attack Suite</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Summary & Conclusion -->
+    <div id="slide-8" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
+          <span class="text-cyan-400 font-mono">[08]</span>
+          <span>Conclusion, Key Deliverables & Repository Access</span>
+        </h2>
+        <span class="text-xs font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-900">SUMMARY</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+          <strong class="text-cyan-400 font-mono block text-sm">Key Competition Deliverables:</strong>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed font-sans">
+            <li><strong>Deliverable 1:</strong> One-Page Problem Statement covering all 6 mandatory criteria.</li>
+            <li><strong>Deliverable 2:</strong> Master PowerPoint Presentation deck (8 slides).</li>
+            <li><strong>Deliverable 3:</strong> Working code module, 15 unit tests, and complete documentation.</li>
+            <li><strong>Deliverable 4:</strong> Timed 4:30 simulation and demonstration video script.</li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 font-mono">
+          <strong class="text-purple-400 block text-sm">Live System Links:</strong>
+          <div class="space-y-1.5 text-slate-300 text-[11px]">
+            <div>• GitHub Repo: <span class="text-cyan-400">github.com/Heman-123/Northstar-Sentinel</span></div>
+            <div>• SOC Dashboard: <span class="text-emerald-400">http://127.0.0.1:8765</span></div>
+            <div>• Master Report: <span class="text-slate-400">reports/NORTHSTAR_SENTINEL_INVESTIGATION_REPORT.md</span></div>
+            <div>• Executive PDF: <span class="text-slate-400">reports/EXECUTIVE_REPORT.html</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
+        <span>Northstar Sentinel — The Definitive Zero-Trust Solution for Case NS-26-014</span>
+        <span>Thank You • Questions & Defense</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="no-print max-w-[1100px] w-full mx-auto flex justify-between items-center mt-4 text-xs font-mono text-slate-400">
+    <span>Tip: Use <strong>Left / Right Arrow Keys</strong> or buttons to navigate slides</span>
+    <span>Northstar Sentinel &copy; 2026</span>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+      for (let i = 1; i <= totalSlides; i++) {
+        const el = document.getElementById('slide-' + i);
+        if (el) el.classList.add('hidden');
+      }
+      const target = document.getElementById('slide-' + n);
+      if (target) target.classList.remove('hidden');
+      document.getElementById('slideIndicator').textContent = `Slide ${n} of ${totalSlides}`;
+      currentSlide = n;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>

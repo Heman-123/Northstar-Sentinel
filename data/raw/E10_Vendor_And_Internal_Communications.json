@@ -1,0 +1,20 @@
+{
+  "communications": [
+    {
+      "id": "VND-221",
+      "timestamp": "2026-10-12T06:30:00+05:30",
+      "sender": "support@rollcallconnect.com",
+      "recipient": "it.ops@northstar.edu.in",
+      "subject": "RE: Clarification on Morning Integration Spike",
+      "body": "We confirm routine connector maintenance occurred on our side between 02:00 and 02:30 IST on October 12. However, our records show no scheduled task or authorized engineer initiated a bulk learner export at 03:17 IST. Furthermore, our authorized production connector egress node is strictly 10.10.4.12. We are investigating whether an API secret was inadvertently disclosed in past ticket threads."
+    },
+    {
+      "id": "INT-REQ-18",
+      "timestamp": "2026-10-12T08:00:00+05:30",
+      "sender": "rahul.k@northstar.edu.in",
+      "recipient": "support@rollcallconnect.com",
+      "subject": "URGENT: Credential and Source Verification",
+      "body": "Please confirm the active credential ID, authorized source IPs, and last rotation date for client rollcall-prod. Do NOT send raw secrets over this communication channel."
+    }
+  ]
+}
