@@ -8,20 +8,8 @@
     "threat_type": "LEGITIMATE_OR_UNCHECKED",
     "security_layer": "ALLOW_GATE",
     "reason": "Request allowed",
-    "logged_at": "14:00:45 IST",
-    "epoch": 1794904245.3503325
-  },
-  {
-    "action": "GET /v1/attendance/sync",
-    "client_id": "rollcall-prod",
-    "source_ip": "198.51.100.99",
-    "decision": "BLOCKED",
-    "status_code": 403,
-    "threat_type": "ADAPTIVE_THREAT_AUTO_SHUNNING",
-    "security_layer": "ADAPTIVE_THREAT_AUTO_SHUNNING",
-    "reason": "DYNAMICALLY_QUARANTINED: IP 198.51.100.99 is AUTO-BANNED due to suspicious activity (3599s remaining)",
-    "logged_at": "14:00:44 IST",
-    "epoch": 1794904244.836216
+    "logged_at": "16:45:46 IST",
+    "epoch": 1794914146.1729538
   },
   {
     "action": "GET /v1/attendance/sync",
@@ -32,20 +20,8 @@
     "threat_type": "PERIMETER_IP_FILTER",
     "security_layer": "PERIMETER_IP_FILTER",
     "reason": "UNAUTHORIZED_SOURCE_IP: 198.51.100.99 not permitted for client rollcall-prod",
-    "logged_at": "14:00:44 IST",
-    "epoch": 1794904244.3263032
-  },
-  {
-    "action": "GET /v1/attendance/sync",
-    "client_id": "rollcall-prod",
-    "source_ip": "198.51.100.99",
-    "decision": "BLOCKED",
-    "status_code": 403,
-    "threat_type": "PERIMETER_IP_FILTER",
-    "security_layer": "PERIMETER_IP_FILTER",
-    "reason": "UNAUTHORIZED_SOURCE_IP: 198.51.100.99 not permitted for client rollcall-prod",
-    "logged_at": "14:00:43 IST",
-    "epoch": 1794904243.815301
+    "logged_at": "16:45:46 IST",
+    "epoch": 1794914146.1629667
   },
   {
     "action": "POST /v1/learners/export",
@@ -56,8 +32,8 @@
     "threat_type": "LEAST_PRIVILEGE_SCOPE_GATE",
     "security_layer": "LEAST_PRIVILEGE_SCOPE_GATE",
     "reason": "PRIVILEGE_CREEP_BLOCKED: Client 'rollcall-prod' lacks required scope 'learner:export'",
-    "logged_at": "14:00:42 IST",
-    "epoch": 1794904242.8004768
+    "logged_at": "16:45:46 IST",
+    "epoch": 1794914146.148948
   },
   {
     "action": "GET /v1/attendance/sync",
@@ -68,8 +44,8 @@
     "threat_type": "PERIMETER_IP_FILTER",
     "security_layer": "PERIMETER_IP_FILTER",
     "reason": "UNAUTHORIZED_SOURCE_IP: 203.0.113.77 not permitted for client rollcall-prod",
-    "logged_at": "14:00:41 IST",
-    "epoch": 1794904241.74881
+    "logged_at": "16:45:45 IST",
+    "epoch": 1794914145.981966
   },
   {
     "action": "GET /favicon.ico",
@@ -80,7 +56,7 @@
     "threat_type": "UNAUTHENTICATED_ACCESS_ATTEMPT",
     "security_layer": "AUTHENTICATION_GATE",
     "reason": "Missing or invalid Bearer token",
-    "logged_at": "13:51:54 IST",
-    "epoch": 1794903714.2787056
+    "logged_at": "16:44:43 IST",
+    "epoch": 1794914083.1708426
   }
 ]
