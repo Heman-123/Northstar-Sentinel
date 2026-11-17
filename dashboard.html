@@ -94,9 +94,51 @@
     }
     .pulse-glow { animation: pulse-glow 2s infinite ease-in-out; }
     @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    /* Tab fade transition */
+    .tab-view { animation: tabFadeIn 0.22s ease both; }
+    @keyframes tabFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* KPI card entrance animation */
+    .kpi-animate { animation: kpiIn 0.4s ease both; }
+    @keyframes kpiIn { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .kpi-animate:nth-child(1) { animation-delay: 0.05s; }
+    .kpi-animate:nth-child(2) { animation-delay: 0.12s; }
+    .kpi-animate:nth-child(3) { animation-delay: 0.19s; }
+    .kpi-animate:nth-child(4) { animation-delay: 0.26s; }
+    .kpi-animate:nth-child(5) { animation-delay: 0.33s; }
+
+    /* Toast notification */
+    #toast-container { position: fixed; top: 68px; right: 18px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .toast { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 10px; min-width: 280px; max-width: 360px;
+             background: #111625; border: 1px solid #232d44; box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,242,254,0.1);
+             pointer-events: all; animation: toastIn 0.3s ease both; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes toastOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(32px); } }
+    .toast-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 10px; font-weight: 900; }
+    .toast-success .toast-icon { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+    .toast-title { font-size: 11px; font-weight: 700; color: #f1f5f9; font-family: 'JetBrains Mono', monospace; }
+    .toast-body { font-size: 10.5px; color: #94a3b8; margin-top: 2px; }
+    .toast-badge { margin-top: 4px; display: inline-block; padding: 1px 7px; border-radius: 999px; background: rgba(16,185,129,0.15); color: #10b981; font-size: 9px; font-weight: 700; border: 1px solid rgba(16,185,129,0.3); }
+
+    /* Footer bar */
+    .sentinel-footer { background: #090d16; border-top: 1px solid #232d44; padding: 8px 20px; display: flex; align-items: center; justify-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b; }
+
+    /* Finalist badge */
+    .finalist-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px;
+                      background: linear-gradient(90deg, rgba(121,40,202,0.25), rgba(0,242,254,0.1));
+                      border: 1px solid rgba(168,85,247,0.5); color: #c084fc; font-size: 10px; font-weight: 700;
+                      font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em; }
+
+    /* Sim result animation */
+    .sim-result-animate { animation: simResultIn 0.35s ease both; }
+    @keyframes simResultIn { from { opacity: 0; transform: scaleY(0.8); } to { opacity: 1; transform: scaleY(1); } }
   </style>
 </head>
 <body class="min-h-screen flex flex-col cyber-grid antialiased selection:bg-purple-600 selection:text-white">
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
 
   <!-- ===================================================================== -->
   <!-- 1. TOP ENTERPRISE COMMAND HEADER                                      -->
@@ -127,6 +169,7 @@
               <span class="hidden md:inline px-2 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-800/80 font-mono text-[10px] font-bold animate-pulse">
                 DEFCON 2 : ELEVATED RISK
               </span>
+              <span class="finalist-badge hidden lg:inline-flex">🏆 CRIMEATHON '26 FINALIST</span>
             </div>
             <p class="text-[11px] text-brand-muted font-mono flex items-center space-x-2 mt-0.5">
               <span>CRIMEATHON '26 DEFENSE TRACK</span>
@@ -207,7 +250,7 @@
   <section class="max-w-[1840px] w-full mx-auto px-5 pt-4">
     <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
       
-      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
+      <div class="bg-brand-panel/90 border border-brand-border rounded-xl p-3.5 flex flex-col justify-between shadow-sm kpi-animate" style="box-shadow:0 0 18px rgba(244,63,94,0.08)">
         <div class="flex items-center justify-between mb-1">
           <span class="text-[10px] font-mono text-brand-muted uppercase font-semibold">Impacted Records</span>
           <span class="p-1 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20"><i data-lucide="users" class="h-3.5 w-3.5"></i></span>
@@ -573,8 +616,8 @@
                   </div>
                 </div>
                 <div class="flex justify-between"><span class="text-brand-dim">Type</span><span class="text-white">Investigation</span></div>
-                <div class="flex justify-between"><span class="text-brand-dim">Time</span><span class="text-white">Aug 27th, 2025 2:00 AM</span></div>
-                <div class="flex justify-between"><span class="text-brand-dim">Last updated</span><span class="text-white">Aug 27th, 2025 3:44 AM</span></div>
+                <div class="flex justify-between"><span class="text-brand-dim">Time</span><span class="text-white">12 Oct 2026 03:00 IST</span></div>
+                <div class="flex justify-between"><span class="text-brand-dim">Last updated</span><span class="text-white">12 Oct 2026 03:30 IST</span></div>
               </div>
             </div>
           </div>
@@ -1486,15 +1529,15 @@
 
     function executeDefenseAction(act) {
       if (act === 'SHUN_ATTACKER_IP') {
-        alert("SOAR Playbook Executed: IP 203.0.113.77 shunned across perimeter firewall.");
+        showToast('SOAR PLAYBOOK EXECUTED', 'IP 203.0.113.77 shunned across perimeter firewall. Rule activated in 0ms.', '✓');
         ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "Firewall Shun executed on IP 203.0.113.77" });
         renderNotesThread();
       } else if (act === 'REVOKE_ROLLCALL_TOKEN') {
-        alert("SOAR Playbook Executed: JTI rc-prod-01 revoked in 0ms.");
+        showToast('SOAR PLAYBOOK EXECUTED', 'JTI rc-prod-01 revoked in 0ms. Token blacklisted in IdP cluster.', '✓');
         ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "Revoked JTI rc-prod-01 across IdP cluster" });
         renderNotesThread();
       } else if (act === 'LOCKDOWN_CAMPUSVAULT') {
-        alert("SOAR Playbook Executed: CampusVault bucket locked to read-only DLP mode.");
+        showToast('SOAR PLAYBOOK EXECUTED', 'CampusVault bucket locked to read-only DLP mode. No further downloads possible.', '✓');
         ES_NOTES.unshift({ author: "soar@northstar.edu.in", time: "JUST NOW", text: "CampusVault S3 bucket quarantined in DLP mode" });
         renderNotesThread();
       }
@@ -1538,7 +1581,27 @@
     }
 
     function runSplQuery() {
-      alert("SPL Query executed across index=northstar. 2 matching events found.");
+      showToast('SPL QUERY EXECUTED', 'index=northstar_dfir — 2 matching events returned. Correlating with E03 and E04.', '✓');
+    }
+
+    // Toast Notification System
+    function showToast(title, body, icon = '✓') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast toast-success';
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div>
+          <div class="toast-title">${title}</div>
+          <div class="toast-body">${body}</div>
+          <span class="toast-badge">EXECUTED</span>
+        </div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease both';
+        setTimeout(() => toast.remove(), 320);
+      }, 4200);
     }
 
     // Launch Routine
@@ -1550,5 +1613,24 @@
     renderTelemetryFeed();
     setTimeout(initChart, 100);
   </script>
+
+  <!-- Footer Bar -->
+  <footer class="sentinel-footer mt-auto">
+    <div class="flex items-center justify-between w-full">
+      <div class="flex items-center gap-3">
+        <span class="text-purple-400 font-bold">NORTHSTAR_SENTINEL</span>
+        <span>·</span>
+        <span>CRIMEATHON '26 · Defense Track · Case NS-26-014</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/Heman-123/Northstar-Sentinel" target="_blank" class="text-cyan-400 hover:text-cyan-300 transition-colors">
+          ⬡ github.com/Heman-123/Northstar-Sentinel
+        </a>
+        <span>·</span>
+        <span>Team Northstar · Northstar Skills Academy, Chennai</span>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

@@ -1,409 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRIMEATHON '26 Final Presentation Slide Deck | Northstar Sentinel</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
-    .slide-card {
-      aspect-ratio: 16 / 9;
-      max-width: 1100px;
-      margin: 0 auto;
-      background: linear-gradient(135deg, #111726 0%, #0d121f 100%);
-      border: 1px solid #1f293d;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-    }
-    @media print {
-      body { background: #ffffff; color: #000000; padding: 0; }
-      .no-print { display: none; }
-      .slide-card {
-        aspect-ratio: auto;
-        border: none;
-        box-shadow: none;
-        page-break-after: always;
-        background: #ffffff;
-        color: #000000;
-        margin-bottom: 2rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Northstar Sentinel — CRIMEATHON '26 · Case NS-26-014</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-deep:#07090e;
+  --bg-card:#0c101a;
+  --cyan:#00f2fe;
+  --purple:#7928ca;
+  --purple-light:#a855f7;
+  --amber:#f59e0b;
+  --emerald:#10b981;
+  --rose:#f43f5e;
+  --text:#e2e8f0;
+  --text-muted:#94a3b8;
+  --border:#1e293b;
+}
+html,body{height:100%;background:#000;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);overflow:hidden;}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+/* ── CYBER GRID BG ── */
+.cyber-grid{
+  position:fixed;inset:0;z-index:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,242,254,.04) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,242,254,.04) 60px),
+    linear-gradient(135deg,#07090e 0%,#0c101a 100%);
+  pointer-events:none;
+}
+.cyber-grid::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(121,40,202,.12) 0%,transparent 70%);
+}
+
+/* ── STAGE WRAPPER ── */
+#stage{
+  position:relative;z-index:1;
+  width:960px;height:540px;
+  background:var(--bg-deep);
+  border:1px solid rgba(0,242,254,.18);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,242,254,.12),0 0 120px rgba(121,40,202,.1);
+}
+
+/* ── SLIDES ── */
+.slide{
+  position:absolute;inset:0;
+  padding:40px 48px 56px;
+  display:none;
+  flex-direction:column;
+  opacity:0;
+}
+.slide.active{display:flex;animation:slideIn .45s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(22px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{
+  position:absolute;bottom:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple-light));
+  transition:width .4s ease;border-radius:0 2px 2px 0;
+  box-shadow:0 0 10px rgba(0,242,254,.6);
+  z-index:10;
+}
+
+/* ── NAV ── */
+#nav{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:16px;margin-top:14px;
+}
+.nav-btn{
+  background:rgba(0,242,254,.08);border:1px solid rgba(0,242,254,.25);
+  color:var(--cyan);border-radius:8px;width:40px;height:40px;
+  cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-family:'JetBrains Mono',monospace;
+}
+.nav-btn:hover{background:rgba(0,242,254,.18);box-shadow:0 0 14px rgba(0,242,254,.35);}
+#slide-counter{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-muted);min-width:52px;text-align:center;}
+.nav-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(148,163,184,.5);letter-spacing:.04em;}
+
+/* ── TYPOGRAPHY UTILS ── */
+.grad-text{
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--purple-light) 60%,#ff6ef7 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.grad-text-amber{
+  background:linear-gradient(135deg,var(--amber),#f97316);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.slide-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;opacity:.8;}
+.slide-heading{font-size:26px;font-weight:800;line-height:1.2;margin-bottom:18px;}
+.slide-heading-lg{font-size:32px;font-weight:800;line-height:1.15;margin-bottom:12px;}
+.mono{font-family:'JetBrains Mono',monospace;}
+
+/* ── KPI PILL / CARD ── */
+.kpi-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;border-radius:999px;
+  border:1px solid rgba(0,242,254,.3);
+  background:rgba(0,242,254,.07);
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+  color:var(--cyan);letter-spacing:.05em;
+  box-shadow:0 0 18px rgba(0,242,254,.2);
+  animation:glow-pulse 2.5s ease-in-out infinite;
+}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 14px rgba(0,242,254,.2);}50%{box-shadow:0 0 28px rgba(0,242,254,.45);}}
+.kpi-card{
+  flex:1;border-radius:12px;padding:18px 16px;
+  border:1px solid rgba(0,242,254,.18);
+  background:rgba(0,242,254,.05);
+  box-shadow:0 0 24px rgba(0,242,254,.18);
+  display:flex;flex-direction:column;gap:4px;
+}
+.kpi-num{font-size:28px;font-weight:800;line-height:1;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── COLOR UTILS ── */
+.c-cyan{color:var(--cyan);}
+.c-purple{color:var(--purple-light);}
+.c-amber{color:var(--amber);}
+.c-emerald{color:var(--emerald);}
+.c-rose{color:var(--rose);}
+.bg-cyan{background:rgba(0,242,254,.1);border-color:rgba(0,242,254,.3);}
+.bg-purple{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.3);}
+.bg-amber{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);}
+.bg-emerald{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);}
+.bg-rose{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);}
+
+/* ── BADGE ── */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid;
+}
+
+/* ── PRINT ── */
+@media print{
+  html,body{overflow:visible;height:auto;background:#07090e;}
+  #stage{position:relative;width:960px;height:540px;page-break-after:always;margin:0 auto 40px;}
+  .slide{position:relative;display:flex!important;opacity:1!important;animation:none!important;}
+  #nav,.cyber-grid{display:none!important;}
+}
+
+/* ════════════════════════════════
+   SLIDE 1 — TITLE
+════════════════════════════════ */
+#slide-1{justify-content:center;align-items:center;text-align:center;gap:0;}
+.s1-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:rgba(0,242,254,.7);text-transform:uppercase;margin-bottom:14px;}
+.s1-title{font-size:52px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:10px;}
+.s1-subtitle{font-size:17px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+.s1-sub2{font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(148,163,184,.55);margin-bottom:28px;letter-spacing:.08em;}
+.s1-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.s1-footer{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(148,163,184,.4);letter-spacing:.1em;text-transform:uppercase;}
+.s1-divider{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:0 auto 22px;}
+
+/* ════════════════════════════════
+   SLIDE 2 — THE PROBLEM
+════════════════════════════════ */
+.s2-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;}
+.s2-cards{display:flex;flex-direction:column;gap:10px;}
+.s2-card{border-radius:10px;padding:12px 14px;border:1px solid;background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.3);}
+.s2-card-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--rose);text-transform:uppercase;margin-bottom:4px;}
+.s2-card-body{font-size:12.5px;color:var(--text-muted);line-height:1.45;}
+.s2-card-body strong{color:var(--text);}
+.mitre-col{display:flex;flex-direction:column;gap:8px;}
+.mitre-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--purple-light);margin-bottom:4px;text-transform:uppercase;}
+.mitre-box{border-radius:8px;padding:10px 12px;border:1px solid rgba(168,85,247,.3);background:rgba(168,85,247,.08);}
+.mitre-id{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--purple-light);}
+.mitre-name{font-size:12px;color:var(--text-muted);margin-top:2px;}
+
+/* ════════════════════════════════
+   SLIDE 3 — TIMELINE
+════════════════════════════════ */
+.timeline-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;flex:1;min-height:0;overflow:hidden;}
+.timeline-col{position:relative;padding-left:28px;display:flex;flex-direction:column;gap:0;}
+.timeline-col::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--cyan),var(--purple-light));border-radius:2px;}
+.tl-event{position:relative;padding:5px 0 5px 0;display:flex;align-items:flex-start;gap:0;min-height:46px;}
+.tl-dot{position:absolute;left:-24px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--cyan);border:2px solid var(--bg-deep);box-shadow:0 0 10px rgba(0,242,254,.7);animation:dot-pulse 2s ease-in-out infinite;}
+.tl-dot.purple{background:var(--purple-light);box-shadow:0 0 10px rgba(168,85,247,.7);}
+@keyframes dot-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+.tl-time{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--cyan);min-width:60px;margin-top:1px;line-height:1;}
+.tl-content{flex:1;}
+.tl-stage{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;margin-bottom:1px;}
+.tl-desc{font-size:11.5px;color:var(--text-muted);line-height:1.35;}
+
+/* ════════════════════════════════
+   SLIDE 4 — TRUTH MATRIX
+════════════════════════════════ */
+.matrix-table{width:100%;border-collapse:collapse;flex:1;}
+.matrix-table th{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;border-bottom:2px solid rgba(0,242,254,.2);text-align:left;color:var(--text-muted);}
+.matrix-table td{padding:7px 12px;border-bottom:1px solid rgba(30,41,59,.8);font-size:12.5px;vertical-align:middle;}
+.matrix-table tr:last-child td{border-bottom:none;}
+.conf-badge{padding:3px 9px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em;border:1px solid;display:inline-block;}
+.conf-certain{color:var(--emerald);border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.1);}
+.conf-undetermined{color:var(--amber);border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.1);}
+.conf-probable{color:var(--cyan);border-color:rgba(0,242,254,.4);background:rgba(0,242,254,.08);}
+.conf-not{color:var(--rose);border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.08);}
+
+/* ════════════════════════════════
+   SLIDE 5 — ARCHITECTURE
+════════════════════════════════ */
+.arch-layers{display:flex;flex-direction:column;gap:10px;flex:1;}
+.arch-layer{display:flex;align-items:center;gap:14px;border-radius:12px;padding:12px 16px;border:1px solid;transition:box-shadow .3s;}
+.arch-layer:nth-child(1){background:rgba(0,242,254,.05);border-color:rgba(0,242,254,.25);}
+.arch-layer:nth-child(2){background:rgba(168,85,247,.05);border-color:rgba(168,85,247,.25);}
+.arch-layer:nth-child(3){background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.25);}
+.arch-layer:nth-child(4){background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.25);}
+.arch-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;flex-shrink:0;}
+.arch-body{flex:1;}
+.arch-title{font-weight:700;font-size:14px;margin-bottom:2px;}
+.arch-desc{font-size:12px;color:var(--text-muted);}
+.arch-mitigation{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 10px;border-radius:999px;border:1px solid;display:inline-block;margin-top:4px;}
+
+/* ════════════════════════════════
+   SLIDE 6 — DFIR PIPELINE
+════════════════════════════════ */
+.pipeline-row{display:flex;align-items:center;gap:0;flex:1;}
+.pipe-box{flex:1;border-radius:10px;padding:14px 10px;text-align:center;border:1px solid rgba(0,242,254,.2);background:rgba(0,242,254,.05);display:flex;flex-direction:column;gap:4px;align-items:center;position:relative;}
+.pipe-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.12em;margin-bottom:2px;}
+.pipe-name{font-weight:700;font-size:13px;color:var(--text);}
+.pipe-desc{font-size:10.5px;color:var(--text-muted);line-height:1.3;margin-top:2px;}
+.pipe-arrow{color:var(--cyan);font-size:16px;padding:0 2px;opacity:.6;flex-shrink:0;}
+.pipe-box:nth-child(odd){border-color:rgba(0,242,254,.3);box-shadow:0 0 14px rgba(0,242,254,.1);}
+.pipe-box:nth-child(even){border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.05);box-shadow:0 0 14px rgba(168,85,247,.1);}
+
+/* ════════════════════════════════
+   SLIDE 7 — TECH STACK
+════════════════════════════════ */
+.tech-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;}
+.tech-card{border-radius:10px;padding:14px 14px;border:1px solid var(--border);background:rgba(12,16,26,.8);display:flex;flex-direction:column;gap:6px;}
+.tech-icon{font-size:18px;margin-bottom:2px;}
+.tech-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.tech-items{list-style:none;display:flex;flex-direction:column;gap:3px;}
+.tech-items li{font-size:11.5px;color:var(--text-muted);padding-left:12px;position:relative;line-height:1.3;}
+.tech-items li::before{content:'›';position:absolute;left:0;color:var(--cyan);font-weight:700;}
+
+/* ════════════════════════════════
+   SLIDE 8 — DEMO RESULTS
+════════════════════════════════ */
+.demo-table{width:100%;border-collapse:collapse;flex:1;}
+.demo-table th{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-bottom:2px solid rgba(0,242,254,.2);text-align:left;color:var(--cyan);}
+.demo-table td{padding:7px 12px;border-bottom:1px solid rgba(30,41,59,.7);font-size:12px;vertical-align:middle;}
+.demo-table tr:last-child td{border-bottom:none;}
+.demo-table tr:hover td{background:rgba(0,242,254,.03);}
+.res-badge{padding:3px 9px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;border:1px solid;}
+.res-blocked{color:var(--rose);border-color:rgba(244,63,94,.5);background:rgba(244,63,94,.1);}
+.res-pass{color:var(--emerald);border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.1);}
+.demo-badges{display:flex;gap:12px;margin-top:12px;}
+.demo-glow-badge{flex:1;border-radius:10px;padding:12px 16px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;border:1px solid;}
+.demo-glow-badge.green{color:var(--emerald);border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.08);box-shadow:0 0 20px rgba(16,185,129,.2);}
+.demo-glow-badge.cyan{color:var(--cyan);border-color:rgba(0,242,254,.4);background:rgba(0,242,254,.07);box-shadow:0 0 20px rgba(0,242,254,.2);}
+
+/* ════════════════════════════════
+   SLIDE 9 — COMPLIANCE
+════════════════════════════════ */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;}
+.comp-col-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.comp-item{border-radius:8px;padding:10px 12px;border:1px solid;margin-bottom:8px;}
+.comp-item-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-bottom:3px;}
+.comp-item-body{font-size:12px;color:var(--text-muted);line-height:1.4;}
+.urgency-box{
+  grid-column:1/-1;border-radius:10px;padding:12px 16px;
+  border:1px solid rgba(245,158,11,.5);background:rgba(245,158,11,.08);
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 0 20px rgba(245,158,11,.15);
+  animation:urgency-pulse 1.8s ease-in-out infinite;
+}
+@keyframes urgency-pulse{0%,100%{box-shadow:0 0 20px rgba(245,158,11,.15);}50%{box-shadow:0 0 36px rgba(245,158,11,.35);}}
+.urgency-icon{font-size:22px;flex-shrink:0;}
+.urgency-text{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--amber);}
+
+/* ════════════════════════════════
+   SLIDE 10 — CONCLUSION
+════════════════════════════════ */
+#slide-10{justify-content:center;align-items:center;text-align:center;gap:0;}
+.s10-title{font-size:34px;font-weight:800;line-height:1.1;margin-bottom:6px;}
+.s10-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(148,163,184,.5);margin-bottom:22px;letter-spacing:.06em;}
+.s10-cards{display:flex;gap:12px;width:100%;margin-bottom:20px;}
+.s10-card{flex:1;border-radius:12px;padding:16px 12px;border:1px solid rgba(0,242,254,.2);background:rgba(0,242,254,.05);box-shadow:0 0 24px rgba(0,242,254,.18);text-align:center;}
+.s10-card-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:6px;}
+.s10-card-body{font-size:12px;color:var(--text-muted);line-height:1.4;}
+.s10-cta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cyan);margin-bottom:12px;letter-spacing:.04em;}
+.s10-footer{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(148,163,184,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.s10-trophy{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 22px;border-radius:999px;
+  border:1px solid rgba(245,158,11,.5);
+  background:rgba(245,158,11,.1);
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--amber);letter-spacing:.06em;
+  box-shadow:0 0 24px rgba(245,158,11,.25);
+  animation:glow-pulse 2s ease-in-out infinite;
+}
+</style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 sm:p-8">
+<body>
+<div class="cyber-grid"></div>
 
-  <!-- Top Toolbar -->
-  <div class="no-print max-w-[1100px] w-full mx-auto flex justify-between items-center mb-4">
-    <div class="flex items-center space-x-3">
-      <span class="px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-800 text-xs font-mono font-bold">
-        CRIMEATHON '26 PPT DECK
-      </span>
-      <span class="text-xs text-slate-400 font-mono">Deliverable 2: Final 8-Slide Master Deck</span>
+<div id="stage">
+  <!-- ═══════════════ SLIDE 1 ═══════════════ -->
+  <div class="slide active" id="slide-1">
+    <div class="s1-eyebrow">CRIMEATHON '26 · Defense Track · Case NS-26-014</div>
+    <div class="s1-title grad-text">NORTHSTAR SENTINEL</div>
+    <div class="s1-divider"></div>
+    <div class="s1-subtitle">Zero-Trust DFIR Solution for the RollCall API Breach</div>
+    <div class="s1-sub2">CRIMEATHON '26 · Defense Track · Case NS-26-014</div>
+    <div class="s1-pills">
+      <span class="kpi-pill">⚡ 6-Stage DFIR Pipeline</span>
+      <span class="kpi-pill" style="border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.08);color:var(--purple-light);box-shadow:0 0 18px rgba(168,85,247,.25);animation-delay:.5s;">✓ 15/15 Unit Tests Passed</span>
+      <span class="kpi-pill" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.08);color:var(--emerald);box-shadow:0 0 18px rgba(16,185,129,.25);animation-delay:1s;">🛡 Zero-Trust PEP Architecture</span>
     </div>
-    <div class="flex items-center space-x-2">
-      <button onclick="prevSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-all">← Prev</button>
-      <span id="slideIndicator" class="text-xs font-mono px-2 text-cyan-400 font-bold">Slide 1 of 8</span>
-      <button onclick="nextSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-all">Next →</button>
-      <button onclick="window.print()" class="ml-2 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm">
-        Save as PDF / Print
-      </button>
+    <div class="s1-footer">Team Northstar · Northstar Skills Academy, Chennai</div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 2 ═══════════════ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">The Breach</div>
+    <div class="slide-heading grad-text">The Breach: RollCall API Exfiltration, 12 Oct 2026 03:15–03:24 IST</div>
+    <div class="s2-grid">
+      <div class="s2-cards">
+        <div class="s2-card">
+          <div class="s2-card-title">⚠ Attack Vector</div>
+          <div class="s2-card-body">External IP <strong>203.0.113.77</strong> impersonated vendor token.<br/>Legitimate vendor subnet: <strong>10.10.4.0/24</strong> — not enforced.</div>
+        </div>
+        <div class="s2-card">
+          <div class="s2-card-title">📦 Data Exfiltrated</div>
+          <div class="s2-card-body"><strong>972.4 KB</strong> · <strong>2,300 student attendance records</strong><br/><strong>2 unauthorized downloads</strong> from CampusVault bucket.</div>
+        </div>
+        <div class="s2-card">
+          <div class="s2-card-title">🔴 Root Failure (OWASP)</div>
+          <div class="s2-card-body"><strong>API1</strong>: Privilege creep &nbsp;|&nbsp; <strong>API2</strong>: Token Expiry: Never, no IP restriction &nbsp;|&nbsp; <strong>API4</strong>: No rate limiting.</div>
+        </div>
+      </div>
+      <div class="mitre-col">
+        <div class="mitre-label">MITRE ATT&CK™ Techniques</div>
+        <div class="mitre-box">
+          <div class="mitre-id">T1078.004</div>
+          <div class="mitre-name">Cloud Accounts</div>
+        </div>
+        <div class="mitre-box">
+          <div class="mitre-id">T1552.001</div>
+          <div class="mitre-name">Credentials In Files</div>
+        </div>
+        <div class="mitre-box">
+          <div class="mitre-id">T1530</div>
+          <div class="mitre-name">Data from Cloud Storage</div>
+        </div>
+        <div class="mitre-box">
+          <div class="mitre-id">T1567</div>
+          <div class="mitre-name">Exfiltration Over Web Service</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- SLIDES CONTAINER -->
-  <div class="flex-1 flex items-center justify-center">
-
-    <!-- SLIDE 1: Title -->
-    <div id="slide-1" class="slide-card w-full rounded-2xl p-8 sm:p-14 flex flex-col justify-between relative overflow-hidden">
-      <div class="flex justify-between items-center">
-        <span class="px-3 py-1 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800 text-xs font-mono font-bold">DEFENSE TRACK SUBMISSION</span>
-        <span class="text-xs font-mono text-slate-400">CASE FILE: NS-26-014</span>
-      </div>
-      <div class="my-auto space-y-4">
-        <div class="inline-flex items-center space-x-2 text-indigo-400 font-mono text-sm uppercase tracking-widest font-bold">
-          <span>Project Identifier</span>
-        </div>
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-          NORTHSTAR <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500">SENTINEL</span>
-        </h1>
-        <p class="text-base sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
-          Evidence-Driven Zero-Trust Security Monitoring, Automated DFIR Correlation & Incident Response Platform
-        </p>
-      </div>
-      <div class="pt-6 border-t border-slate-800/80 flex justify-between items-end text-xs font-mono text-slate-400">
-        <div>
-          <div>Target: <strong>Northstar Skills Academy Pvt. Ltd. (Chennai)</strong></div>
-          <div class="text-cyan-400 mt-0.5">github.com/Heman-123/Northstar-Sentinel</div>
-        </div>
-        <div class="text-right">
-          <div>Team: <strong>Northstar Defense Taskforce</strong></div>
-          <div class="text-slate-500">Tier-1 Hackathon Finalist Deck</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 2: Problem Identification -->
-    <div id="slide-2" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-rose-400 font-mono">[02]</span>
-          <span>Problem Identification & Attack Landscape</span>
-        </h2>
-        <span class="text-xs font-mono text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-900">INCIDENT DISCOVERY</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-          <span class="text-amber-400 font-bold font-mono text-sm block">Observed Anomaly Cascade (12-Oct-2026):</span>
-          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
-            <li><strong>Attendance Delay:</strong> Third-party connector experienced unexpected synchronization delays.</li>
-            <li><strong>Portal Latency Surge:</strong> Student query latencies jumped from normal 45ms to <strong>8,420 ms (~187× spike)</strong>.</li>
-            <li><strong>Data Staging in Cloud:</strong> Discovery of unscheduled 486.2 KB export file (<code class="text-cyan-400 font-mono">learners-20261012.csv</code>) in CampusVault S3 storage.</li>
-          </ul>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-          <span class="text-rose-400 font-bold font-mono text-sm block">Root Vulnerability Chain (The "Why"):</span>
-          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
-            <li><strong>Privilege Creep (OWASP API1 / CWE-250):</strong> Client <code class="text-purple-300 font-mono">rollcall-prod</code> granted global <code class="text-cyan-400 font-mono">learner.export</code> rights despite attendance-only scope.</li>
-            <li><strong>Credential Hygiene Failure (OWASP API2 / CWE-798):</strong> Token issued with <code class="text-rose-400 font-mono">Expiry: Never</code> and <code class="text-rose-400 font-mono">IP Restriction: None</code>.</li>
-            <li><strong>Rate Limiting Absence (OWASP API4 / CWE-770):</strong> No rate limiting, enabling unthrottled table scans of 2,300 learner records.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Impact: 2,300 Learner PII Records Compromised</span>
-        <span>Statutory Exposure: DPDPA 2023 Penalty up to ₹250 Crores</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 3: Epistemic Matrix -->
-    <div id="slide-3" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-amber-400 font-mono">[03]</span>
-          <span>Forensic Evidence Correlation & Epistemic Matrix</span>
-        </h2>
-        <span class="text-xs font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-900">ISO/IEC 27037 RIGOR</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-auto text-xs">
-        <div class="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/40 space-y-1.5">
-          <span class="font-mono font-bold text-emerald-400 block uppercase">1. Confirmed Facts (Log-Proven)</span>
-          <p class="text-slate-300 text-[11px] leading-relaxed">
-            • External IP 203.0.113.77 ingress at 03:15:55 IST [E09].<br>
-            • svc_rollcall auth via key [E01:A011].<br>
-            • Config read CHG-882 executed at 03:16:35 IST [E11].<br>
-            • 2,300 records queried & exported [E03].<br>
-            • Downloaded twice: 972.4 KB total [E04].
-          </p>
-        </div>
-        <div class="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/40 space-y-1.5">
-          <span class="font-mono font-bold text-cyan-400 block uppercase">2. Supported Inferences</span>
-          <p class="text-slate-300 text-[11px] leading-relaxed">
-            • Token replayed from external IP; legitimate vendor node operated at 02:01 IST.<br>
-            • Key leaked via ticket HD-1058 screenshot or API read CHG-882.<br>
-            • Latency spike caused by mass unindexed database scan.
-          </p>
-        </div>
-        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/40 space-y-1.5">
-          <span class="font-mono font-bold text-amber-400 block uppercase">3. Epistemic Unknowns</span>
-          <p class="text-slate-300 text-[11px] leading-relaxed">
-            • Physical identity of human operator.<br>
-            • Two downloads = 2 copies or 1 resumed TCP stream.<br>
-            • Onward distribution or sale of data.<br>
-            • <strong>No proof links Ajay's login on Oct 9 to RollCall breach on Oct 12.</strong>
-          </p>
-        </div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Scientific separation of facts prevents false attribution in legal forensics</span>
-        <span>Chain-of-Custody: 12/12 SHA-256 Hashes Verified</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 4: Proposed Solution -->
-    <div id="slide-4" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-cyan-400 font-mono">[04]</span>
-          <span>Proposed Solution: Northstar Sentinel Dual Engine</span>
-        </h2>
-        <span class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">ARCHITECTURE</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-          <span class="text-cyan-400 font-bold font-mono text-sm flex items-center space-x-2">
-            <span>PILLAR 1: Evidence-Driven DFIR Engine</span>
-          </span>
-          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
-            <li><strong>Automated Ingestion:</strong> Calculates bit-level SHA-256 digests preserving evidence custody.</li>
-            <li><strong>OCSF Event Normalization:</strong> Unifies 6 disparate schemas into structured event objects.</li>
-            <li><strong>Graph Correlation Engine:</strong> Evaluates 9 cross-source rules across identity, APIs, and cloud storage.</li>
-            <li><strong>10 Behavioral Rules:</strong> DET-001 to DET-010 with decoupled Severity vs. Confidence triage index.</li>
-          </ul>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-          <span class="text-purple-400 font-bold font-mono text-sm flex items-center space-x-2">
-            <span>PILLAR 2: Zero-Trust Policy Enforcement (PEP)</span>
-          </span>
-          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed">
-            <li><strong>CIDR Subnet Pinning:</strong> Restricts RollCall strictly to 10.10.4.0/24; drops 203.0.113.77.</li>
-            <li><strong>Least-Privilege Scoping:</strong> Locks RollCall strictly to attendance:sync (blocks mass export).</li>
-            <li><strong>Token-Bucket Rate Limiter:</strong> Limits requests to 10 req/min, eliminating database latency surges.</li>
-            <li><strong>Two-Man Rule Export Gate:</strong> Mandates cryptographic X-DPO-Approval token before staging files.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Full Offline Local Execution: 127.0.0.1:8765</span>
-        <span>Inspection Latency: 0.8 ms per transaction</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 5: Workflow Pipeline -->
-    <div id="slide-5" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-indigo-400 font-mono">[05]</span>
-          <span>Defensive Workflow & PEP Enforcement Pipeline</span>
-        </h2>
-        <span class="text-xs font-mono text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-900">SYSTEM FLOW</span>
-      </div>
-      <div class="p-4 rounded-xl bg-[#080d1a] border border-slate-800 font-mono text-xs my-auto text-slate-300 space-y-3">
-        <div class="text-center font-bold text-cyan-400">[INBOUND CLIENT REQUEST: GET / POST]</div>
-        <div class="text-center text-slate-500">│</div>
-        <div class="grid grid-cols-5 gap-2 text-center text-[10px]">
-          <div class="p-2 rounded bg-slate-900 border border-slate-700">
-            <strong class="text-rose-400 block">LAYER 0</strong>
-            Auto-Shun Quarantine
-          </div>
-          <div class="p-2 rounded bg-slate-900 border border-slate-700">
-            <strong class="text-cyan-400 block">LAYER 1</strong>
-            CIDR Subnet Pinning
-          </div>
-          <div class="p-2 rounded bg-slate-900 border border-slate-700">
-            <strong class="text-purple-400 block">LAYER 2</strong>
-            OAuth2 Scope Gate
-          </div>
-          <div class="p-2 rounded bg-slate-900 border border-slate-700">
-            <strong class="text-amber-400 block">LAYER 3</strong>
-            Rate Limiter (10/min)
-          </div>
-          <div class="p-2 rounded bg-slate-900 border border-slate-700">
-            <strong class="text-emerald-400 block">LAYER 4</strong>
-            DPO Two-Man Approval
+  <!-- ═══════════════ SLIDE 3 ═══════════════ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">Forensic Evidence</div>
+    <div class="slide-heading grad-text">Forensic Evidence Chain · 9-Event Timeline</div>
+    <div class="timeline-wrap">
+      <div class="timeline-col" style="padding-left:36px;">
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time">03:15:55</div>
+            <div class="tl-stage c-cyan">INGRESS</div>
+            <div class="tl-desc">External IP 203.0.113.77 connects to PEP proxy</div>
           </div>
         </div>
-        <div class="text-center text-slate-500">│ (If All 5 Layers Pass)</div>
-        <div class="text-center font-bold text-emerald-400">[HTTP 200 OK — SANITIZED OPERATION PERMITTED]</div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Zero-Standing Privileges</span>
-        <span>0ms Ephemeral JTI Revocation</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 6: Technologies Used -->
-    <div id="slide-6" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-purple-400 font-mono">[06]</span>
-          <span>Technologies, Frameworks & Standards</span>
-        </h2>
-        <span class="text-xs font-mono text-purple-400 bg-purple-950 px-2 py-0.5 rounded border border-purple-900">TECH STACK</span>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-auto text-xs font-mono">
-        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <strong class="text-cyan-400 block">Languages & Backend</strong>
-          <p class="text-slate-300 text-[11px]">Python 3.12, hashlib, ipaddress, socketserver, http.server, unittest.</p>
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time">03:16:32</div>
+            <div class="tl-stage c-cyan">AUTH</div>
+            <div class="tl-desc">Bearer token <span class="mono" style="font-size:10px;">rc-prod-01</span> accepted (JTI validation only)</div>
+          </div>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <strong class="text-purple-400 block">Web Architecture</strong>
-          <p class="text-slate-300 text-[11px]">Tailwind CSS, Lucide Icons, Chart.js, HTML5 Canvas, SVG Topologies.</p>
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time">03:16:35</div>
+            <div class="tl-stage c-amber">CONFIG READ</div>
+            <div class="tl-desc">CHG-882 configuration record accessed</div>
+          </div>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <strong class="text-rose-400 block">Threat Frameworks</strong>
-          <p class="text-slate-300 text-[11px]">MITRE ATT&CK (T1078, T1552, T1530, T1567), OWASP API Top 10 (2023).</p>
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time">03:16:40</div>
+            <div class="tl-stage c-amber">SEARCH</div>
+            <div class="tl-desc">2,300 attendance records queried</div>
+          </div>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <strong class="text-emerald-400 block">Compliance Standards</strong>
-          <p class="text-slate-300 text-[11px]">DPDPA 2023 Sec 8(5), CERT-In 6-Hr Mandate, ISO/IEC 27037.</p>
-        </div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Zero Third-Party Cloud Dependencies (Safe Local Execution)</span>
-        <span>100% Offline Demonstrable</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 7: Experimental Results -->
-    <div id="slide-7" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-emerald-400 font-mono">[07]</span>
-          <span>Experimental Verification & Attack Simulation Results</span>
-        </h2>
-        <span class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">VERIFICATION</span>
-      </div>
-      <div class="my-auto space-y-3 text-xs">
-        <table class="w-full text-left border border-slate-800 rounded-lg overflow-hidden font-mono">
-          <thead class="bg-slate-900 text-slate-400 text-[11px]">
-            <tr>
-              <th class="p-2.5">Attack Vector (Case NS-26-014)</th>
-              <th class="p-2.5">Vulnerable Baseline (Before)</th>
-              <th class="p-2.5">Sentinel Hardened PEP (After)</th>
-              <th class="p-2.5 text-right">Verdict</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800 text-[11px]">
-            <tr>
-              <td class="p-2.5 text-white font-bold">1. External IP Replay (203.0.113.77)</td>
-              <td class="p-2.5 text-rose-400">HTTP 200 OK (Data Leaked)</td>
-              <td class="p-2.5 text-emerald-400">HTTP 403 (PERIMETER_IP_FILTER)</td>
-              <td class="p-2.5 text-right text-emerald-400 font-bold">BLOCKED</td>
-            </tr>
-            <tr>
-              <td class="p-2.5 text-white font-bold">2. Privilege Creep (Learner Export)</td>
-              <td class="p-2.5 text-rose-400">HTTP 200 OK (Mass Staged)</td>
-              <td class="p-2.5 text-emerald-400">HTTP 403 (SCOPE_INSUFFICIENT)</td>
-              <td class="p-2.5 text-right text-emerald-400 font-bold">BLOCKED</td>
-            </tr>
-            <tr>
-              <td class="p-2.5 text-white font-bold">3. Repeat Probe Attacker (198.51.100.99)</td>
-              <td class="p-2.5 text-rose-400">HTTP 200 OK (Unrestricted)</td>
-              <td class="p-2.5 text-emerald-400">HTTP 403 (DYNAMIC_AUTO_SHUN)</td>
-              <td class="p-2.5 text-right text-emerald-400 font-bold">AUTO-BANNED</td>
-            </tr>
-            <tr>
-              <td class="p-2.5 text-white font-bold">4. Benchmark (Legitimate Sync 10.10.4.12)</td>
-              <td class="p-2.5 text-slate-400">HTTP 200 OK</td>
-              <td class="p-2.5 text-emerald-400">HTTP 200 OK (Latency: 0.8ms)</td>
-              <td class="p-2.5 text-right text-emerald-400 font-bold">ALLOWED</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="p-2 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-mono text-center font-bold">
-          [+] 15 / 15 Modular Unit Tests Passed 100% across Ingestion, Normalization, Correlation & PEP Proxy
-        </div>
-      </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Automated Verification via run_unit_tests.bat</span>
-        <span>Zero False Negatives in Live Attack Suite</span>
-      </div>
-    </div>
-
-    <!-- SLIDE 8: Summary & Conclusion -->
-    <div id="slide-8" class="slide-card w-full rounded-2xl p-8 sm:p-12 flex flex-col justify-between hidden">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center space-x-2">
-          <span class="text-cyan-400 font-mono">[08]</span>
-          <span>Conclusion, Key Deliverables & Repository Access</span>
-        </h2>
-        <span class="text-xs font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-900">SUMMARY</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs">
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-          <strong class="text-cyan-400 font-mono block text-sm">Key Competition Deliverables:</strong>
-          <ul class="space-y-1.5 text-slate-300 list-disc pl-4 leading-relaxed font-sans">
-            <li><strong>Deliverable 1:</strong> One-Page Problem Statement covering all 6 mandatory criteria.</li>
-            <li><strong>Deliverable 2:</strong> Master PowerPoint Presentation deck (8 slides).</li>
-            <li><strong>Deliverable 3:</strong> Working code module, 15 unit tests, and complete documentation.</li>
-            <li><strong>Deliverable 4:</strong> Timed 4:30 simulation and demonstration video script.</li>
-          </ul>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 font-mono">
-          <strong class="text-purple-400 block text-sm">Live System Links:</strong>
-          <div class="space-y-1.5 text-slate-300 text-[11px]">
-            <div>• GitHub Repo: <span class="text-cyan-400">github.com/Heman-123/Northstar-Sentinel</span></div>
-            <div>• SOC Dashboard: <span class="text-emerald-400">http://127.0.0.1:8765</span></div>
-            <div>• Master Report: <span class="text-slate-400">reports/NORTHSTAR_SENTINEL_INVESTIGATION_REPORT.md</span></div>
-            <div>• Executive PDF: <span class="text-slate-400">reports/EXECUTIVE_REPORT.html</span></div>
+        <div class="tl-event">
+          <div class="tl-dot purple"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time" style="color:var(--purple-light);">03:17:09</div>
+            <div class="tl-stage c-purple">EXPORT</div>
+            <div class="tl-desc">8,420ms bulk export completed (latency spike)</div>
           </div>
         </div>
       </div>
-      <div class="text-[11px] font-mono text-slate-500 border-t border-slate-800 pt-3 flex justify-between">
-        <span>Northstar Sentinel — The Definitive Zero-Trust Solution for Case NS-26-014</span>
-        <span>Thank You • Questions & Defense</span>
+      <div class="timeline-col" style="padding-left:36px;">
+        <div class="tl-event">
+          <div class="tl-dot purple"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time" style="color:var(--purple-light);">03:17:35</div>
+            <div class="tl-stage c-purple">STAGE</div>
+            <div class="tl-desc">Data staged to CampusVault bucket</div>
+          </div>
+        </div>
+        <div class="tl-event">
+          <div class="tl-dot" style="background:var(--rose);box-shadow:0 0 10px rgba(244,63,94,.7);"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time" style="color:var(--rose);">03:21:03</div>
+            <div class="tl-stage c-rose">DOWNLOAD 1</div>
+            <div class="tl-desc">486.2 KB downloaded</div>
+          </div>
+        </div>
+        <div class="tl-event">
+          <div class="tl-dot" style="background:var(--rose);box-shadow:0 0 10px rgba(244,63,94,.7);animation-delay:.4s;"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time" style="color:var(--rose);">03:24:48</div>
+            <div class="tl-stage c-rose">DOWNLOAD 2</div>
+            <div class="tl-desc">486.2 KB downloaded (duplicate)</div>
+          </div>
+        </div>
+        <div class="tl-event">
+          <div class="tl-dot" style="background:var(--emerald);box-shadow:0 0 10px rgba(16,185,129,.7);"></div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="tl-time" style="color:var(--emerald);">03:25:00+</div>
+            <div class="tl-stage c-emerald">DETECTION</div>
+            <div class="tl-desc">Sentinel anomaly correlation fires</div>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Bottom Navigation Bar -->
-  <div class="no-print max-w-[1100px] w-full mx-auto flex justify-between items-center mt-4 text-xs font-mono text-slate-400">
-    <span>Tip: Use <strong>Left / Right Arrow Keys</strong> or buttons to navigate slides</span>
-    <span>Northstar Sentinel &copy; 2026</span>
+  <!-- ═══════════════ SLIDE 4 ═══════════════ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">Epistemic Analysis</div>
+    <div class="slide-heading grad-text">Epistemic Truth Matrix — What We Know vs. What We Cannot</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Finding</th>
+          <th>Confidence</th>
+          <th>Evidence Basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>External IP 203.0.113.77 initiated session</td>
+          <td><span class="conf-badge conf-certain">CERTAIN</span></td>
+          <td class="mono" style="font-size:11px;color:var(--text-muted);">E03 API Gateway Logs</td>
+        </tr>
+        <tr>
+          <td>Token rc-prod-01 had Expiry: Never</td>
+          <td><span class="conf-badge conf-certain">CERTAIN</span></td>
+          <td class="mono" style="font-size:11px;color:var(--text-muted);">E05 Integration Register</td>
+        </tr>
+        <tr>
+          <td>972.4 KB exfiltrated in 2 downloads</td>
+          <td><span class="conf-badge conf-certain">CERTAIN</span></td>
+          <td class="mono" style="font-size:11px;color:var(--text-muted);">E04 CampusVault Audit Logs</td>
+        </tr>
+        <tr>
+          <td>Human operator identity behind IP</td>
+          <td><span class="conf-badge conf-undetermined">UNDETERMINED</span></td>
+          <td style="font-size:12px;color:var(--text-muted);">No attribution evidence</td>
+        </tr>
+        <tr>
+          <td>2 downloads = 2 separate copies</td>
+          <td><span class="conf-badge conf-probable">PROBABLE</span></td>
+          <td style="font-size:12px;color:var(--text-muted);">Timing + size match</td>
+        </tr>
+        <tr>
+          <td>former.ajay linked to RollCall breach</td>
+          <td><span class="conf-badge conf-not">NOT ESTABLISHED</span></td>
+          <td style="font-size:12px;color:var(--text-muted);">No forensic link found</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <script>
-    let currentSlide = 1;
-    const totalSlides = 8;
+  <!-- ═══════════════ SLIDE 5 ═══════════════ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">Solution Architecture</div>
+    <div class="slide-heading grad-text">Northstar Sentinel — 4-Layer Zero-Trust Defense</div>
+    <div class="arch-layers">
+      <div class="arch-layer">
+        <div class="arch-num" style="background:rgba(0,242,254,.12);color:var(--cyan);">1</div>
+        <div class="arch-body">
+          <div class="arch-title c-cyan">CIDR Subnet Pinning</div>
+          <div class="arch-desc">Block any IP outside 10.10.4.0/24 — vendor network binding enforced at PEP ingress</div>
+          <span class="arch-mitigation" style="color:var(--cyan);border-color:rgba(0,242,254,.3);background:rgba(0,242,254,.07);">Mitigates: T1078.004 External IP Impersonation</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-num" style="background:rgba(168,85,247,.12);color:var(--purple-light);">2</div>
+        <div class="arch-body">
+          <div class="arch-title c-purple">JWT Scope Gate</div>
+          <div class="arch-desc">Verify scope + expiry + audience — tokens with Expiry: Never auto-revoked via JTI blacklist</div>
+          <span class="arch-mitigation" style="color:var(--purple-light);border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.07);">Mitigates: T1552.001 Credential Misuse</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-num" style="background:rgba(245,158,11,.12);color:var(--amber);">3</div>
+        <div class="arch-body">
+          <div class="arch-title c-amber">Rate Limiter</div>
+          <div class="arch-desc">Max 100 req/min per token — burst detection triggers automatic throttle + alert</div>
+          <span class="arch-mitigation" style="color:var(--amber);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.07);">Mitigates: T1530 Data Enumeration & Scraping</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-num" style="background:rgba(16,185,129,.12);color:var(--emerald);">4</div>
+        <div class="arch-body">
+          <div class="arch-title c-emerald">DPO Two-Man Rule</div>
+          <div class="arch-desc">Bulk exports need DPO co-sign — prevents unilateral data extraction above threshold</div>
+          <span class="arch-mitigation" style="color:var(--emerald);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.07);">Mitigates: T1567 Bulk Exfiltration</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    function showSlide(n) {
-      for (let i = 1; i <= totalSlides; i++) {
-        const el = document.getElementById('slide-' + i);
-        if (el) el.classList.add('hidden');
-      }
-      const target = document.getElementById('slide-' + n);
-      if (target) target.classList.remove('hidden');
-      document.getElementById('slideIndicator').textContent = `Slide ${n} of ${totalSlides}`;
-      currentSlide = n;
+  <!-- ═══════════════ SLIDE 6 ═══════════════ -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label">DFIR Pipeline</div>
+    <div class="slide-heading grad-text">6-Stage Automated DFIR Pipeline</div>
+    <div class="pipeline-row">
+      <div class="pipe-box">
+        <div class="pipe-num">STAGE 01</div>
+        <div class="pipe-name">INGEST</div>
+        <div class="pipe-desc">Parse raw CSV evidence<br/>12 files, E01–E12</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">
+        <div class="pipe-num" style="color:var(--purple-light);">STAGE 02</div>
+        <div class="pipe-name">HASH</div>
+        <div class="pipe-desc">SHA-256 chain-of-custody verification</div>
+      </div>
+      <div class="pipe-arrow" style="color:var(--purple-light);">→</div>
+      <div class="pipe-box">
+        <div class="pipe-num">STAGE 03</div>
+        <div class="pipe-name">NORMALIZE</div>
+        <div class="pipe-desc">Timestamp parsing, IP norm., UTC alignment</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">
+        <div class="pipe-num" style="color:var(--purple-light);">STAGE 04</div>
+        <div class="pipe-name">CORRELATE</div>
+        <div class="pipe-desc">Cross-log event stitching (9-event chain)</div>
+      </div>
+      <div class="pipe-arrow" style="color:var(--purple-light);">→</div>
+      <div class="pipe-box">
+        <div class="pipe-num">STAGE 05</div>
+        <div class="pipe-name">CLASSIFY</div>
+        <div class="pipe-desc">MITRE ATT&CK + OWASP mapping</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">
+        <div class="pipe-num" style="color:var(--purple-light);">STAGE 06</div>
+        <div class="pipe-name">REPORT</div>
+        <div class="pipe-desc">Epistemic matrix + DPDPA 2023 compliance output</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;">
+      <span class="badge bg-cyan c-cyan">12 Evidence Files</span>
+      <span class="badge bg-purple c-purple">9-Event Chain</span>
+      <span class="badge bg-emerald c-emerald">SHA-256 Verified</span>
+      <span class="badge bg-amber c-amber">DPDPA 2023 Compliant</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 7 ═══════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label">Technology Stack</div>
+    <div class="slide-heading grad-text">Technology Stack & Architecture</div>
+    <div class="tech-grid">
+      <div class="tech-card" style="border-color:rgba(0,242,254,.2);">
+        <div class="tech-title c-cyan">🐍 Core</div>
+        <ul class="tech-items">
+          <li>Python 3.11</li>
+          <li>Pandas (data processing)</li>
+          <li>hashlib (SHA-256)</li>
+          <li>pytest (test runner)</li>
+        </ul>
+      </div>
+      <div class="tech-card" style="border-color:rgba(168,85,247,.2);">
+        <div class="tech-title c-purple">🔐 Security</div>
+        <ul class="tech-items">
+          <li>JWT scope validation</li>
+          <li>CIDR filtering (ipaddress)</li>
+          <li>Token rate-limiter</li>
+          <li>DPO approval gate</li>
+        </ul>
+      </div>
+      <div class="tech-card" style="border-color:rgba(245,158,11,.2);">
+        <div class="tech-title c-amber">🖥 Frontend</div>
+        <ul class="tech-items">
+          <li>Tailwind CSS</li>
+          <li>Chart.js</li>
+          <li>Lucide Icons</li>
+          <li>HTML5 dashboard</li>
+        </ul>
+      </div>
+      <div class="tech-card" style="border-color:rgba(16,185,129,.2);">
+        <div class="tech-title c-emerald">✅ Testing</div>
+        <ul class="tech-items">
+          <li>15 unit tests (pytest)</li>
+          <li>10 simulation tests</li>
+          <li>mock_api_server</li>
+          <li>100% pass rate</li>
+        </ul>
+      </div>
+      <div class="tech-card" style="border-color:rgba(0,242,254,.15);">
+        <div class="tech-title c-cyan">🔗 Forensics</div>
+        <ul class="tech-items">
+          <li>SHA-256 chain-of-custody</li>
+          <li>12 evidence files</li>
+          <li>E01–E12 indexed</li>
+          <li>Tamper detection</li>
+        </ul>
+      </div>
+      <div class="tech-card" style="border-color:rgba(244,63,94,.2);">
+        <div class="tech-title c-rose">⚖ Compliance</div>
+        <ul class="tech-items">
+          <li>DPDPA 2023 §8(5)</li>
+          <li>CERT-In 6-hr reporting</li>
+          <li>OWASP API Top 10</li>
+          <li>MITRE ATT&CK v14</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 8 ═══════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-label">Live Demo</div>
+    <div class="slide-heading grad-text">Zero-Trust PEP — Live Test Results</div>
+    <table class="demo-table">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Attack Vector</th>
+          <th>PEP Result</th>
+          <th>Layer Triggered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono" style="color:var(--cyan);">TC-001</td>
+          <td style="color:var(--text-muted);">External IP 203.0.113.77</td>
+          <td><span class="res-badge res-blocked">HTTP 403 BLOCKED</span></td>
+          <td style="font-size:11.5px;">Layer 1: CIDR</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--cyan);">TC-002</td>
+          <td style="color:var(--text-muted);">Token Expiry: Never</td>
+          <td><span class="res-badge res-blocked">HTTP 401 REJECTED</span></td>
+          <td style="font-size:11.5px;">Layer 2: JWT Scope</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--cyan);">TC-003</td>
+          <td style="color:var(--text-muted);">500 req/min burst</td>
+          <td><span class="res-badge" style="color:var(--amber);border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.1);">HTTP 429 THROTTLED</span></td>
+          <td style="font-size:11.5px;">Layer 3: Rate Limiter</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--cyan);">TC-004</td>
+          <td style="color:var(--text-muted);">Bulk export, no DPO</td>
+          <td><span class="res-badge res-blocked">HTTP 403 DENIED</span></td>
+          <td style="font-size:11.5px;">Layer 4: DPO Rule</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--cyan);">TC-005–010</td>
+          <td style="color:var(--text-muted);">Various replay/pivot attacks</td>
+          <td><span class="res-badge res-pass">ALL BLOCKED</span></td>
+          <td style="font-size:11.5px;">Multi-layer</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="demo-badges">
+      <div class="demo-glow-badge green">✓ 10/10 Simulation Tests PASSED</div>
+      <div class="demo-glow-badge cyan">✓ 15/15 Unit Tests PASSED</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 9 ═══════════════ -->
+  <div class="slide" id="slide-9">
+    <div class="slide-label">Compliance & Legal</div>
+    <div class="slide-heading grad-text">DPDPA 2023 & CERT-In Compliance Mapping</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;align-content:start;">
+      <div>
+        <div class="comp-col-title c-rose">📋 DPDPA 2023 — Violations Found</div>
+        <div class="comp-item" style="border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.06);">
+          <div class="comp-item-title c-rose">§8(5) — Data Protection Safeguards</div>
+          <div class="comp-item-body"><strong style="color:var(--rose);">VIOLATED</strong> — No IP restriction enforced, token Expiry: Never, no rate limiting on bulk export endpoint.</div>
+        </div>
+        <div class="comp-item" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);">
+          <div class="comp-item-title c-amber">§17 — Data Breach Notification</div>
+          <div class="comp-item-body"><strong style="color:var(--amber);">PENDING</strong> — CERT-In 6-hour mandatory reporting window active. DPO notification in progress.</div>
+        </div>
+        <div class="comp-item" style="border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.06);">
+          <div class="comp-item-title c-rose">Penalty Exposure</div>
+          <div class="comp-item-body">Up to <strong style="color:var(--rose);">₹250 Crores</strong> — Highest tier penalty under DPDPA 2023 framework.</div>
+        </div>
+      </div>
+      <div>
+        <div class="comp-col-title c-emerald">🛡 Remediation Applied</div>
+        <div class="comp-item" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06);">
+          <div class="comp-item-title c-emerald">Zero-Trust PEP Deployed</div>
+          <div class="comp-item-body">All 4 layers active. Token revocation in <strong>0ms</strong> via JTI blacklist. CIDR binding enforced.</div>
+        </div>
+        <div class="comp-item" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06);">
+          <div class="comp-item-title c-emerald">CERT-In Report Filed</div>
+          <div class="comp-item-body">6-hour SLA met. DPO notified with full forensic chain (12 evidence files, SHA-256 verified).</div>
+        </div>
+        <div class="comp-item" style="border-color:rgba(0,242,254,.3);background:rgba(0,242,254,.06);">
+          <div class="comp-item-title c-cyan">DPO Two-Man Rule Active</div>
+          <div class="comp-item-body">Bulk export operations now require dual DPO authorization. Prevents recurrence.</div>
+        </div>
+      </div>
+      <div class="urgency-box">
+        <div class="urgency-icon">⚡</div>
+        <div class="urgency-text">CERT-In 6-Hour Mandatory Reporting Window — Action Required</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE 10 ═══════════════ -->
+  <div class="slide" id="slide-10">
+    <div class="s10-title grad-text">Zero Trust. Zero Hallucination.<br/>Zero Breach.</div>
+    <div class="s10-sub">CRIMEATHON '26 · Case NS-26-014 · Final Defense Submission</div>
+    <div class="s10-cards">
+      <div class="s10-card">
+        <div class="s10-card-title">🔗 Forensic Certainty</div>
+        <div class="s10-card-body">9-event evidence chain<br/>12 files, SHA-256 verified<br/>Epistemic truth matrix</div>
+      </div>
+      <div class="s10-card" style="border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.06);box-shadow:0 0 24px rgba(168,85,247,.18);">
+        <div class="s10-card-title" style="color:var(--purple-light);">🛡 Defensive Coverage</div>
+        <div class="s10-card-body">4 MITRE techniques blocked<br/>10/10 simulation tests<br/>4-layer PEP architecture</div>
+      </div>
+      <div class="s10-card" style="border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.06);box-shadow:0 0 24px rgba(16,185,129,.18);">
+        <div class="s10-card-title" style="color:var(--emerald);">⚖ Legal Compliance</div>
+        <div class="s10-card-body">DPDPA 2023 §8(5) addressed<br/>CERT-In SLA met<br/>DPO notified</div>
+      </div>
+    </div>
+    <div class="s10-cta">github.com/Heman-123/Northstar-Sentinel</div>
+    <div class="s10-footer">CRIMEATHON '26 · Case NS-26-014 · Team Northstar</div>
+    <div class="s10-trophy">🏆 CRIMEATHON '26 FINALIST — DEFENSE TRACK</div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar"></div>
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" title="Previous (←)">←</button>
+  <span id="slide-counter">1 / 10</span>
+  <button class="nav-btn" id="btn-next" title="Next (→)">→</button>
+  <span class="nav-hint" style="margin-left:12px;">← → navigate &nbsp;|&nbsp; F = fullscreen &nbsp;|&nbsp; P = print</span>
+</div>
+
+<script>
+(function(){
+  const TOTAL = 10;
+  let cur = 1;
+
+  function show(n){
+    document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+    const el = document.getElementById('slide-'+n);
+    if(el) el.classList.add('active');
+    document.getElementById('slide-counter').textContent = n+' / '+TOTAL;
+    document.getElementById('progress-bar').style.width = ((n/TOTAL)*100)+'%';
+    cur = n;
+  }
+
+  document.getElementById('btn-prev').addEventListener('click',()=>{ if(cur>1) show(cur-1); });
+  document.getElementById('btn-next').addEventListener('click',()=>{ if(cur<TOTAL) show(cur+1); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){ if(cur<TOTAL){ show(cur+1); e.preventDefault(); } }
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){ if(cur>1){ show(cur-1); e.preventDefault(); } }
+    else if(e.key==='f'||e.key==='F'){
+      const el = document.getElementById('stage');
+      if(document.fullscreenElement) document.exitFullscreen();
+      else el.requestFullscreen();
     }
+    else if(e.key==='p'||e.key==='P'){ window.print(); }
+  });
 
-    function nextSlide() {
-      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
-    }
+  // Touch swipe
+  let tx=0;
+  const stage = document.getElementById('stage');
+  stage.addEventListener('touchstart',function(e){ tx=e.touches[0].clientX; },{passive:true});
+  stage.addEventListener('touchend',function(e){
+    const dx=e.changedTouches[0].clientX-tx;
+    if(dx<-50&&cur<TOTAL) show(cur+1);
+    else if(dx>50&&cur>1) show(cur-1);
+  },{passive:true});
 
-    function prevSlide() {
-      if (currentSlide > 1) showSlide(currentSlide - 1);
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') nextSlide();
-      if (e.key === 'ArrowLeft') prevSlide();
-    });
-  </script>
+  show(1);
+})();
+</script>
 </body>
 </html>
